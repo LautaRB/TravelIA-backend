@@ -9,7 +9,11 @@ class User(models.Model):
             ("ADMIN", "ADMIN"),
             ("USER", "USER")
     ]
-    role = models.CharField(choices=ROLE, default=ROLE[1])
+    role = models.CharField(choices=ROLE, default="USER", max_length=10)
 
     def __str__(self): #Para ver el nombre en la BD
         return self.username + ' - ' + self.role
+    
+    def set_password(self, raw_password):
+        self.password = raw_password
+        self.save()
