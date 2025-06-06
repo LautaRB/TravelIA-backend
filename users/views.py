@@ -1,29 +1,18 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from rest_framework import status
-from .serializers import UserSerializer
-from .models import User
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
+class ProtectedView(APIView): # clase para testear la autenticación
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"message": f"Hola, {request.user.username}! Estás autenticado con JWT."})
+
 @api_view(['GET'])
 def landing(request):
     return Response ('Hello Landingpage!')
 
 @api_view(['POST'])
 def register(request):
-    
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        
-        user = User.objects.get(username=serializer.data['username'])
-        user.set_password(serializer.data['password'])
-        user.save()
-        
-        token = Token.objects.create(user=user)
-        
-        return Response({'token': token.key, "user": serializer.data}, status=status.HTTP_201_CREATED)
-    
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response ('Hello Register!')
