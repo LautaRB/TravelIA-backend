@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .models import User
+from .serializers import UserSerializer
 
 # Create your views here.
 class ProtectedView(APIView): # clase para la autenticación
@@ -18,44 +18,10 @@ def landing(request):
 @api_view(['POST'])
 def register(request):
     
-    username = request.data.get('username')
-    email = request.data.get('email')
-    password = request.data.get('password')
-    role = request.data.get('role')
+    serializer = UserSerializer(data=request.data)
 
-    if not all([username, email, password]):
-        if not username:
-            return Response(
-                {'error': 'Se requiere username.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        elif not email:
-            return Response(
-                {'error': 'Se requiere email.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        elif not password:
-            return Response(
-                {'error': 'Se requieren username, email y password.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-    if User.objects.filter(username=username).exists():
-        return Response(
-            {'error': 'El nombre de usuario ya está en uso.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': '¡Usuario registrado con éxito!'}, status=status.HTTP_201_CREATED)
     
-    user = User.objects.create_user(
-        username=request.data.get('username'),
-        email=request.data.get('email'),
-        password=request.data.get('password'),
-        role=request.data.get('role')
-    )
-    
-    if role:
-        user.role = role
-    user.save()
-
-    return Response ({'message': f'Usuario creado con éxito!', 'status': status.HTTP_201_CREATED})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
