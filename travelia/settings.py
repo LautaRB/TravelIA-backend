@@ -50,7 +50,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'EXCEPTION_HANDLER': 'travelia.exception_handler.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'travelia.utils.exception_handler.custom_exception_handler',
 }
 
 SIMPLE_JWT = {
