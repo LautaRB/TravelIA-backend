@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from travelia.utils.exception_handler import custom_exception_handler
+from rest_framework.exceptions import ValidationError
 from .serializers import UserSerializer
 
 # Create your views here.
@@ -9,7 +9,7 @@ class ProtectedView(APIView): # clase para la autenticación
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return custom_exception_handler(request)
+        return Response({"success": True, "message": "Bienvenido a la API de TravelIA"})
 
 @api_view(['GET'])
 def landing(request):
@@ -22,10 +22,10 @@ def register(request):
 
     if serializer.is_valid():
         serializer.save()
-        return custom_exception_handler(serializer.errors)
+        return Response({"success": True, "message": "Usuario registrado con éxito"})
     
-    return custom_exception_handler(serializer.errors)
+    raise ValidationError(serializer.errors)
 
 @api_view(['POST'])
 def login(request):
-    return custom_exception_handler(request)
+    return Response ('Hello Login!')

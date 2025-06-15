@@ -31,7 +31,8 @@ class User(AbstractUser):
         ("SUPERUSER", "SUPERUSER"),
         ("ADMIN", "ADMIN"),
         ("USER", "USER"),
-    ] 
+    ]
+    email = models.EmailField(unique=True)
     role = models.CharField(choices=ROLE_CHOICES, default= "USER", max_length=10)
     objects = UserManager() 
 
