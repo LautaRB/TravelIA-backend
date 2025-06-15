@@ -13,7 +13,7 @@ def handle_validation_error(exc, response):
     
     if 'username' in data:
         username_errors = data.get('username')
-        if isinstance(username_errors, list):
+        if username_errors:
             first_error_username = str(username_errors[0]) if username_errors else ''
             if first_error_username == MessagesES.ERROR_USER_ALREADY_EXISTS:
                 return {
@@ -31,7 +31,7 @@ def handle_validation_error(exc, response):
         }
     elif 'email' in data:
         email_errors = data.get('email')
-        if isinstance(email_errors, list):
+        if email_errors:
             first_error_email = str(email_errors[0]) if email_errors else ''
             if first_error_email == MessagesES.ERROR_EMAIL_ALREADY_EXISTS:
                 return {
