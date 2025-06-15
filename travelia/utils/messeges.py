@@ -1,5 +1,5 @@
 class MessagesES:
-# Mensajes de error
+    # Mensajes de error
     ERROR_SUPERUSER_STAFF = "El superusuario debe tener is_staff=True"
     ERROR_SUPERUSER_SUPERUSER = "El superusuario debe tener is_superuser=True"
     ERROR_USERNAME_REQUIRED = "El nombre de usuario es requerido"
@@ -8,7 +8,7 @@ class MessagesES:
     ERROR_REGISTER = "No se pudo registrar el usuario"
     ERROR_BAD_CREDENTIALS = "Credenciales inválidas. Intente nuevamente."
     ERROR_USER_ALREADY_EXISTS = "Ya existe un usuario con ese nombre."
-    ERROR_EMAIL_ALREADY_EXISTS = "Ya existe un usuario con ese email."
+    ERROR_EMAIL_ALREADY_EXISTS = "Ya existe un/a usuario con este/a email."
 
     #Mensajes de exito
     SUCCESS_LOGIN = "Login exitoso"

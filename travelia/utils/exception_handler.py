@@ -2,7 +2,7 @@ from rest_framework.views import exception_handler
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework.response import Response
 from rest_framework import status
-from .messeges import MessagesES, MessagesEN
+from .messeges import MessagesES
 import logging
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def custom_exception_handler(exc, context):
                 if username_errors and isinstance(username_errors, list):
                     first_error_username = str(username_errors[0])
                 
-                if first_error_username == MessagesEN.ERROR_USER_ALREADY_EXISTS:
+                if first_error_username == MessagesES.ERROR_USER_ALREADY_EXISTS:
                     message = MessagesES.ERROR_USER_ALREADY_EXISTS
                     estado = status.HTTP_400_BAD_REQUEST
                 else:
@@ -38,9 +38,7 @@ def custom_exception_handler(exc, context):
                 if email_errors and isinstance(email_errors,list):
                     first_error_email = str(email_errors[0])
                 
-                print(first_error_email)
-                
-                if first_error_email == MessagesEN.ERROR_EMAIL_ALREADY_EXISTS:
+                if first_error_email == MessagesES.ERROR_EMAIL_ALREADY_EXISTS:
                     message = MessagesES.ERROR_EMAIL_ALREADY_EXISTS
                     estado = status.HTTP_400_BAD_REQUEST
                 else:
