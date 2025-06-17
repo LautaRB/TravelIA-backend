@@ -8,4 +8,5 @@ urlpatterns = [
     path('users/protected/', views.ProtectedView.as_view(), name='protected'), #Ruta para el usuario autenticado
     path('users/register/', views.register),
     path('users/login/', views.login),
+    path('users/logout/', views.logout),
 ]

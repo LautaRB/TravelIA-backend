@@ -42,6 +42,11 @@ def handle_validation_error(exc, response):
             "message": MessagesES.ERROR_EMAIL_REQUIRED,
             "status": status.HTTP_400_BAD_REQUEST
         }
+    elif 'refresh' in data:
+        return {
+            "message": MessagesES.ERROR_REFRESH_REQUIRED,
+            "status": status.HTTP_400_UNAUTHORIZED
+        }
     return {
         "message": "Datos inválidos",
         "status": status.HTTP_400_BAD_REQUEST
