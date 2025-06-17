@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     path('', views.landing), #Ruta principal
-    path('users/refreshtoken/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('users/protected/', views.ProtectedView.as_view(), name='protected'), #Ruta para el usuario autenticado
-    path('users/register/', views.register),
-    path('users/login/', views.login),
-    path('users/logout/', views.logout),
+    path('refreshtoken/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('protected/', views.ProtectedView.as_view(), name='protected'), #Ruta para el usuario autenticado
+    path('register/', views.register),
+    path('login/', views.login),
+    path('logout/', views.logout),
 ]
