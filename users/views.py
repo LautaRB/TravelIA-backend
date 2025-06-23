@@ -15,7 +15,31 @@ class ProtectedView(APIView): # clase para la autenticación
         return Response({
             'success': True,
             'message': f'Hola {request.user.username}, estás autenticado',
+            'details': {
+                'username': request.user.username,
+                'email': request.user.email,
+                'role': request.user.role
+            }
         })
+    
+    def patch(self, request):
+        try:
+            serializer = UserSerializer(instance=request.user, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    'success': True,
+                    'message': MessagesES.SUCCESS_MODIFY_PROFILE
+                })
+            raise ValidationError(serializer.errors)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': MessagesES.ERROR_MODIFY_PROFILE,
+                'details': str(e)
+            }, status=400)
 
 @api_view(['GET'])
 def landing(request):
@@ -37,11 +61,6 @@ def login(request):
     try:
         username = request.data.get('username')
         password = request.data.get('password')
-        
-        if not username:
-            raise ValidationError({"username": "Este campo es requerido"})
-        elif not password:
-            raise ValidationError({"password": "Este campo es requerido"})
         
         serializer = TokenObtainPairSerializer(data={
             'username': username,
@@ -65,9 +84,6 @@ def login(request):
 def logout(request):
     try:
         refresh_token = request.data.get('refresh')
-
-        if not refresh_token:
-            raise ValidationError({'refresh': 'El token de refresh es requerido para hacer logout.'})
 
         token = RefreshToken(refresh_token)
         token.blacklist()  # Invalida el refresh token
