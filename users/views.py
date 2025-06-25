@@ -41,10 +41,6 @@ class ProtectedView(APIView): # clase para la autenticación
                 'details': str(e)
             }, status=400)
 
-@api_view(['GET'])
-def landing(request):
-    return Response ('Hello Landingpage!')
-
 @api_view(['POST'])
 def register(request):
     try:
