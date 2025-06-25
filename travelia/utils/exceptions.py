@@ -20,6 +20,11 @@ def handle_validation_error(exc, response):
                     "message": MessagesES.ERROR_USER_ALREADY_EXISTS,
                     "status": status.HTTP_400_BAD_REQUEST
                 }
+            elif first_error_username == MessagesES.ERROR_USERNAME_TYPE:
+                return {
+                    "message": MessagesES.ERROR_USERNAME_TYPE,
+                    "status": status.HTTP_400_BAD_REQUEST
+                }
         return {
             "message": MessagesES.ERROR_USERNAME_REQUIRED,
             "status": status.HTTP_400_BAD_REQUEST

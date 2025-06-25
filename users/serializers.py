@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth.hashers import make_password
+from travelia.utils.messeges import MessagesES
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
                         'password': {'write_only': True},
                         'email': {'required': True}
                         }
-        
+    
+    def validate_username(self, value):
+        if value.isdigit():
+            raise serializers.ValidationError(MessagesES.ERROR_USERNAME_TYPE)
+        return value
+    
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
