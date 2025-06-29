@@ -29,7 +29,6 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     ROLE_CHOICES = [
         ("SUPERUSER", "SUPERUSER"),
-        ("ADMIN", "ADMIN"),
         ("USER", "USER"),
     ]
     email = models.EmailField(unique=True)
