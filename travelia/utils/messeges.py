@@ -14,6 +14,8 @@ class MessagesES:
     ERROR_USER_ALREADY_EXISTS = "Ya existe un usuario con ese nombre."
     ERROR_EMAIL_ALREADY_EXISTS = "Ya existe un/a usuario con este/a email."
     ERROR_MODIFY_PROFILE = "No se pudo modificar el perfil del usuario."
+    ERROR_DATE_PAST = "La fecha no puede ser anterior a la fecha actual."
+    ERROR_DATES = "La fecha de inicio no puede ser posterior a la de fin."
 
     #Mensajes de exito
     SUCCESS_LOGIN = "Login exitoso."
@@ -37,6 +39,8 @@ class MessagesEN:
     ERROR_USER_ALREADY_EXISTS = "A user with that username already exists."
     ERROR_EMAIL_ALREADY_EXISTS = "user with this email already exists."
     ERROR_MODIFY_PROFILE = "Could not modify user profile."
+    ERROR_DATE_PAST = "Date cannot be in the past."
+    ERROR_DATES = "Start date cannot be after end date."
 
     #Success messages
     SUCCESS_LOGIN = "Login successful."
