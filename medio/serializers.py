@@ -4,4 +4,4 @@ from .models import Medio
 class MedioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medio
-        fields = '__all__'
+        fields = ['id', 'nombre', 'tipo']

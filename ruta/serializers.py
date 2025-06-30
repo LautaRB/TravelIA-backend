@@ -4,4 +4,4 @@ from .models import Ruta
 class RutaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ruta
-        fields = '__all__'
+        fields = ['id', 'origen', 'destino', 'km', 'tiempo']
