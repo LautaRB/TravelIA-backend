@@ -1,50 +1,78 @@
 class MessagesES:
-    # Mensajes de error
+    # -Mensajes de error-
+    
+    #Error en los campos del superusuario
     ERROR_SUPERUSER_STAFF = "El superusuario debe tener is_staff=True"
     ERROR_SUPERUSER_SUPERUSER = "El superusuario debe tener is_superuser=True"
+    
+    #Error en los campos del usuario
     ERROR_USERNAME_REQUIRED = "El nombre de usuario es requerido."
     ERROR_USERNAME_TYPE = "El nombre de usuario no puede ser solo números."
     ERROR_PASSWORD_REQUIRED = "La contraseña es requerida."
     ERROR_EMAIL_REQUIRED = "El email es requerido."
     ERROR_REFRESH_REQUIRED = "El refresh token es requerido."
+    ERROR_USER_ALREADY_EXISTS = "Ya existe un usuario con ese nombre."
+    ERROR_EMAIL_ALREADY_EXISTS = "Ya existe un/a usuario con este/a email."
+    
+    #Error en la modificación del perfil del usuario
+    ERROR_MODIFY_PROFILE = "No se pudo modificar el perfil del usuario."
+    
+    #Error en la sesión
     ERROR_REGISTER = "No se pudo registrar el usuario."
     ERROR_LOGIN = "No se pudo iniciar sesión."
     ERROR_LOGOUT = "No se pudo cerrar sesión."
     ERROR_BAD_CREDENTIALS = "Credenciales inválidas. Intente nuevamente."
-    ERROR_USER_ALREADY_EXISTS = "Ya existe un usuario con ese nombre."
-    ERROR_EMAIL_ALREADY_EXISTS = "Ya existe un/a usuario con este/a email."
-    ERROR_MODIFY_PROFILE = "No se pudo modificar el perfil del usuario."
+    
+    #Error en los campos de la fecha
     ERROR_DATE_PAST = "La fecha no puede ser anterior a la fecha actual."
     ERROR_DATES = "La fecha de inicio no puede ser posterior a la de fin."
 
-    #Mensajes de exito
+    # -Mensajes de exito-
+    
+    #Exito en la sesión
     SUCCESS_LOGIN = "Login exitoso."
     SUCCESS_REGISTER = "Usuario registrado con éxito."
     SUCCESS_LOGOUT = "Sesión cerrada."
+    
+    #Exito en la modificación del perfil del usuario
     SUCCESS_MODIFY_PROFILE = "Perfil del usuario modificado con éxito."
 
 class MessagesEN:
-    #Error messages
+    # -Error messages-
+    
+    #Error in the superuser fields
     ERROR_SUPERUSER_STAFF = "Superuser must have is_staff=True"
     ERROR_SUPERUSER_SUPERUSER = "Superuser must have is_superuser=True"
+    
+    #Error in the user fields
     ERROR_USERNAME_REQUIRED = "Username is required."
     ERROR_USERNAME_TYPE = "Username cannot be only numbers."
     ERROR_PASSWORD_REQUIRED = "Password is required."
     ERROR_EMAIL_REQUIRED = "Email is required."
     ERROR_REFRESH_REQUIRED = "Refresh token is required."
+    ERROR_USER_ALREADY_EXISTS = "A user with that username already exists."
+    ERROR_EMAIL_ALREADY_EXISTS = "user with this email already exists."
+    
+    #Error in the modification of the user profile
+    ERROR_MODIFY_PROFILE = "Could not modify user profile."
+    
+    #Error in the session
     ERROR_REGISTER = "User registration failed."
     ERROR_LOGIN = "Login failed."
     ERROR_LOGOUT = "Logout failed."
     ERROR_BAD_CREDENTIALS = "Invalid credentials. Please try again."
-    ERROR_USER_ALREADY_EXISTS = "A user with that username already exists."
-    ERROR_EMAIL_ALREADY_EXISTS = "user with this email already exists."
-    ERROR_MODIFY_PROFILE = "Could not modify user profile."
+   
+    #Error in the date fields
     ERROR_DATE_PAST = "Date cannot be in the past."
     ERROR_DATES = "Start date cannot be after end date."
 
-    #Success messages
+    # -Success messages-
+    
+    #Success in the session
     SUCCESS_LOGIN = "Login successful."
     SUCCESS_REGISTER = "User registered successfully."
     SUCCESS_LOGOUT = "Logout successful."
+    
+    #Success in the modification of the user profile
     SUCCESS_MODIFY_PROFILE = "User profile modified successfully."
 
