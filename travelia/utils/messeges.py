@@ -1,6 +1,6 @@
 class MessagesES:
     # -Mensajes de error-
-    
+
     #Error en los campos del superusuario
     ERROR_SUPERUSER_STAFF = "El superusuario debe tener is_staff=True"
     ERROR_SUPERUSER_SUPERUSER = "El superusuario debe tener is_superuser=True"
@@ -27,6 +27,16 @@ class MessagesES:
     ERROR_DATE_PAST = "La fecha no puede ser anterior a la fecha actual."
     ERROR_DATES = "La fecha de inicio no puede ser posterior a la de fin."
 
+    #Error en la creación de un viaje
+    ERROR_TITLE_REQUIRED = "El título es requerido."
+    ERROR_ROUTE_REQUIRED = "La ruta es requerida."
+    ERROR_MEDIA_REQUIRED = "El medio es requerido."
+    ERROR_START_DATE_REQUIRED = "La fecha de inicio es requerida."
+    ERROR_END_DATE_REQUIRED = "La fecha de fin es requerida."
+    
+    #Msj de valicacion generica
+    GENERIC_VALIDATION_ERROR = "Datos inválidos"
+    
     # -Mensajes de exito-
     
     #Exito en la sesión

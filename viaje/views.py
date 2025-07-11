@@ -13,4 +13,8 @@ class ViajeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # Asocia automáticamente el nuevo viaje al user logueado
-        serializer.save(user=self.request.user)
+        
+        if (serializer.is_valid()):
+            serializer.save(user=self.request.user)
+        else:
+            raise serializer.ValidationError(serializer.errors)
