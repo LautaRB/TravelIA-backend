@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from .models import Ruta, Medio
+from ruta.models import Ruta
+from medio.models import Medio
 
 User = get_user_model()
 

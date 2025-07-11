@@ -1,28 +1,39 @@
 from rest_framework import serializers
 from .models import Viaje
-from ruta.serializers import RutaSerializer
-from medio.serializers import MedioSerializer
+from ruta.models import Ruta
+from medio.models import Medio
 from travelia.utils.messeges import MessagesES
 
+
 class ViajeSerializer(serializers.ModelSerializer):
-    ruta = RutaSerializer(read_only=True)
-    medio = MedioSerializer(read_only=True)
+    ruta = serializers.PrimaryKeyRelatedField(
+        queryset=Ruta.objects.all(),
+        required=False,
+        allow_null=True
+    )
+    medio = serializers.PrimaryKeyRelatedField(
+        queryset=Medio.objects.all(),
+        required=False,
+        allow_null=True
+    )
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Viaje
         fields = ['id', 'titulo', 'user', 'ruta', 'medio', 'fecha_inicio', 'fecha_fin']
+        read_only_fields = ['user']
 
     def validate_fecha_inicio(self, date):
         if date < date.today():
             raise serializers.ValidationError(MessagesES.ERROR_DATE_PAST)
         return date
-    
+
     def validate_fecha_fin(self, date):
         if date < date.today():
             raise serializers.ValidationError(MessagesES.ERROR_DATE_PAST)
         return date
-    
-    def validate_fechas(self, data):
+
+    def validate(self, data):
         if data['fecha_inicio'] > data['fecha_fin']:
-            raise serializers.ValidationError(MessagesES.ERROR_DATES)
+            raise serializers.ValidationError(MessagesES.ERROR_DATE_DATES)
         return data
