@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from travelia.utils.messeges import MessagesES
 from .models import Viaje
 from .serializers import ViajeSerializer
 
@@ -13,8 +15,17 @@ class ViajeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # Asocia automáticamente el nuevo viaje al user logueado
-        
-        if (serializer.is_valid()):
-            serializer.save(user=self.request.user)
-        else:
+        try:
+            if serializer.is_valid():
+                serializer.save(user=self.request.user)
+                return Response({
+                    'success': True,
+                    'message': MessagesES.SUCCESS_CREATE_TRIP
+                })
             raise serializer.ValidationError(serializer.errors)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': MessagesES.ERROR_CREATE_TRIP,
+                'details': str(e)
+            }, status=400)
