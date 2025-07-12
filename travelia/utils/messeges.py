@@ -24,11 +24,13 @@ class MessagesES:
     ERROR_BAD_CREDENTIALS = "Credenciales inválidas. Intente nuevamente."
     
     #Error en los campos de la fecha
-    ERROR_DATE_PAST = "La fecha no puede ser anterior a la fecha actual."
+    ERROR_DATE_START_PAST = "La fecha de inicio no puede ser anterior a la fecha actual."
+    ERROR_DATE_END_PAST = "La fecha de fin no puede ser anterior a la fecha actual."
     ERROR_DATES = "La fecha de inicio no puede ser posterior a la de fin."
 
     #Error en los campos de un viaje
     ERROR_TITLE_REQUIRED = "El título es requerido."
+    ERROR_TITLE_TYPE = "El título no puede ser solo números."
     ERROR_ROUTE_REQUIRED = "La ruta es requerida."
     ERROR_MEDIA_REQUIRED = "El medio es requerido."
     ERROR_START_DATE_REQUIRED = "La fecha de inicio es requerida."
@@ -77,9 +79,22 @@ class MessagesEN:
     ERROR_BAD_CREDENTIALS = "Invalid credentials. Please try again."
    
     #Error in the date fields
-    ERROR_DATE_PAST = "Date cannot be in the past."
+    ERROR_DATE_START_PAST = "Start date cannot be in the past."
+    RROR_DATE_END_PAST = "End date cannot be in the past."
     ERROR_DATES = "Start date cannot be after end date."
 
+    #Error in the fields of a trip
+    ERROR_TITLE_REQUIRED = "The title is required."
+    ERROR_TITLE_TYPE = "The title cannot be only numbers."
+    ERROR_ROUTE_REQUIRED = "The route is required."
+    ERROR_MEDIA_REQUIRED = "The media is required."
+    ERROR_START_DATE_REQUIRED = "The start date is required."
+    ERROR_END_DATE_REQUIRED = "The end date is required."
+    ERROR_CREATE_TRIP = "Could not create the trip."
+    
+    #Mssg of generic validation error
+    GENERIC_VALIDATION_ERROR = "Invalid data"
+    
     # -Success messages-
     
     #Success in the session
@@ -89,4 +104,7 @@ class MessagesEN:
     
     #Success in the modification of the user profile
     SUCCESS_MODIFY_PROFILE = "User profile modified successfully."
+    
+    #success in the creation of a trip
+    SUCCESS_CREATE_TRIP = "Trip created successfully."
 

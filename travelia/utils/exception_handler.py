@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
-
+    
     if response is not None:
         handler = EXCEPTION_HANDLERS.get(type(exc)) #obtener el tipo de excepcion
 

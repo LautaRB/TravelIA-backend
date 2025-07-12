@@ -25,15 +25,20 @@ class ViajeSerializer(serializers.ModelSerializer):
 
     def validate_fecha_inicio(self, date):
         if date < date.today():
-            raise serializers.ValidationError(MessagesES.ERROR_DATE_PAST)
+            raise serializers.ValidationError(MessagesES.ERROR_DATE_START_PAST)
         return date
 
     def validate_fecha_fin(self, date):
         if date < date.today():
-            raise serializers.ValidationError(MessagesES.ERROR_DATE_PAST)
+            raise serializers.ValidationError(MessagesES.ERROR_DATE_END_PAST)
         return date
 
     def validate(self, data):
         if data['fecha_inicio'] > data['fecha_fin']:
-            raise serializers.ValidationError(MessagesES.ERROR_DATE_DATES)
+            raise serializers.ValidationError({"fechas": MessagesES.ERROR_DATES})
         return data
+
+    def validate_titulo(self, value):
+        if value.isdigit():
+            raise serializers.ValidationError(MessagesES.ERROR_TITLE_TYPE)
+        return value

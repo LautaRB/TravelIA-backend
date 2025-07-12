@@ -20,11 +20,9 @@ def handle_validation_error(exc, response):
         'ruta': handle_route_errors,
         'medio': handle_media_errors,
         'fecha_inicio': handle_start_date_errors,
-        'fecha_fin': handle_end_date_errors
+        'fecha_fin': handle_end_date_errors,
+        'fechas': handle_fechas_errors
     }
-
-    print(field_handlers.items())
-    print(data)
     
     for field, handler in field_handlers.items():
         if field in data:
@@ -83,10 +81,23 @@ def handle_refresh_errors(errors):
     }
     
 def handle_title_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_TITLE_REQUIRED:
+        return {
+            "message": MessagesES.ERROR_TITLE_REQUIRED,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    elif first_error == MessagesES.ERROR_TITLE_TYPE:
+        return {
+            "message": MessagesES.ERROR_TITLE_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
     return {
         "message": MessagesES.ERROR_TITLE_REQUIRED,
         "status": status.HTTP_400_BAD_REQUEST
     }
+
 
 def handle_route_errors(errors):
     return {
@@ -101,14 +112,46 @@ def handle_media_errors(errors):
     }
 
 def handle_start_date_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_DATE_START_PAST:
+        return {
+            "message": MessagesES.ERROR_DATE_START_PAST,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    elif first_error == MessagesES.ERROR_DATES:
+        return {
+            "message": MessagesES.ERROR_DATES,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    
     return {
         "message": MessagesES.ERROR_START_DATE_REQUIRED,
         "status": status.HTTP_400_BAD_REQUEST
     }
 
 def handle_end_date_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_DATE_END_PAST:
+        return {
+            "message": MessagesES.ERROR_DATE_END_PAST,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    elif first_error == MessagesES.ERROR_DATES:
+        return {
+            "message": MessagesES.ERROR_DATES,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    
     return {
         "message": MessagesES.ERROR_END_DATE_REQUIRED,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+
+def handle_fechas_errors(errors):
+    return {
+        "message": MessagesES.ERROR_DATES,
         "status": status.HTTP_400_BAD_REQUEST
     }
 
