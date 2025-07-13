@@ -21,7 +21,11 @@ def handle_validation_error(exc, response):
         'medio': handle_media_errors,
         'fecha_inicio': handle_start_date_errors,
         'fecha_fin': handle_end_date_errors,
-        'fechas': handle_fechas_errors
+        'fechas': handle_fechas_errors,
+        'origen': handle_origin_errors,
+        'destino': handle_destination_errors,
+        'km': handle_km_errors,
+        'tiempo': handle_time_errors,
     }
     
     for field, handler in field_handlers.items():
@@ -154,6 +158,52 @@ def handle_fechas_errors(errors):
         "message": MessagesES.ERROR_DATES,
         "status": status.HTTP_400_BAD_REQUEST
     }
+
+def handle_origin_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_ORIGIN_TYPE:
+        return {
+            "message": MessagesES.ERROR_ORIGIN_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+        
+    return {
+        "message": MessagesES.ERROR_ORIGIN_REQUIRED,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+    
+def handle_destination_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_DESTINATION_TYPE:
+        return {
+            "message": MessagesES.ERROR_DESTINATION_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+        
+    return {
+        "message": MessagesES.ERROR_DESTINATION_REQUIRED,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+
+def handle_km_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_KM_TIME_TYPE:
+        return {
+            "message": MessagesES.ERROR_KM_TIME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+
+def handle_time_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_KM_TIME_TYPE:
+        return {
+            "message": MessagesES.ERROR_KM_TIME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
 
 # Mapa de excepciones
 EXCEPTION_HANDLERS = {

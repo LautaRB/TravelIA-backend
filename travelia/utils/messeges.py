@@ -35,6 +35,8 @@ class MessagesES:
     ERROR_MEDIA_REQUIRED = "El medio es requerido."
     ERROR_START_DATE_REQUIRED = "La fecha de inicio es requerida."
     ERROR_END_DATE_REQUIRED = "La fecha de fin es requerida."
+    
+    #Error en la creación de un viaje
     ERROR_CREATE_TRIP = "No se pudo crear el viaje."
     
     #Error en la actualización de un viaje
@@ -42,6 +44,22 @@ class MessagesES:
     
     #Error en la eliminación de un viaje
     ERROR_DELETE_TRIP = "No se pudo eliminar el viaje."
+    
+    #Error en los campos de la ruta
+    ERROR_ORIGIN_REQUIRED = "El origen es requerido."
+    ERROR_ORIGIN_TYPE = "El origen no puede ser solo números."
+    ERROR_DESTINATION_REQUIRED = "El destino es requerido."
+    ERROR_DESTINATION_TYPE = "El destino no puede ser solo números."
+    ERROR_KM_TIME_TYPE = "Introduzca un número entero válido."
+    
+    #Error en la creación de una ruta
+    ERROR_CREATE_ROUTE = "No se pudo crear la ruta."
+    
+    #Error en la actualización de una ruta
+    ERROR_UPDATE_ROUTE = "No se pudo actualizar la ruta."
+    
+    #Error en la eliminación de una ruta
+    ERROR_DELETE_ROUTE = "No se pudo eliminar la ruta."
     
     #Msj de valicacion generica
     GENERIC_VALIDATION_ERROR = "Datos inválidos"
@@ -64,6 +82,15 @@ class MessagesES:
     
     #exito en la eliminación de un viaje
     SUCCESS_DELETE_TRIP = "Viaje eliminado con éxito."
+    
+    #éxito en la creación de una ruta
+    SUCCESS_CREATE_ROUTE = "Ruta creada con éxito."
+    
+    #exito en la actualización de una ruta
+    SUCCESS_UPDATE_ROUTE = "Ruta actualizada con éxito."
+    
+    #exito en la eliminación de una ruta
+    SUCCESS_DELETE_ROUTE = "Ruta eliminada con éxito."
 
 class MessagesEN:
     # -Error messages-
@@ -102,6 +129,8 @@ class MessagesEN:
     ERROR_MEDIA_REQUIRED = "The media is required."
     ERROR_START_DATE_REQUIRED = "The start date is required."
     ERROR_END_DATE_REQUIRED = "The end date is required."
+    
+    #Error in the creation of a trip
     ERROR_CREATE_TRIP = "Could not create the trip."
     
     #Error in the update of a trip
@@ -109,6 +138,22 @@ class MessagesEN:
     
     #Error in the deletion of a trip
     ERROR_DELETE_TRIP = "Could not delete the trip."
+    
+    #Error in the fields of a route
+    ERROR_ORIGIN_REQUIRED = "The origin is required."
+    ERROR_ORIGIN_TYPE = "The origin cannot be only numbers."
+    ERROR_DESTINATION_REQUIRED = "The destination is required."
+    ERROR_DESTINATION_TYPE = "The destination cannot be only numbers."
+    ERROR_KM_TIME_TYPE = "Enter a valid integer."
+    
+    #Error in the creation of a route
+    ERROR_CREATE_ROUTE = "Could not create the route."
+    
+    #Error in the update of a route
+    ERROR_UPDATE_ROUTE = "Could not update the route."
+    
+    #Error in the deletion of a route
+    ERROR_DELETE_ROUTE = "Could not delete the route."
     
     #Mssg of generic validation error
     GENERIC_VALIDATION_ERROR = "Invalid data"
@@ -131,3 +176,12 @@ class MessagesEN:
     
     #success in the deletion of a trip
     SUCCESS_DELETE_TRIP = "Trip deleted successfully."
+    
+    #success in the creation of a route
+    SUCCESS_CREATE_ROUTE = "Route created successfully."
+    
+    #success in the update of a route
+    SUCCESS_UPDATE_ROUTE = "Route updated successfully."
+    
+    #success in the deletion of a route
+    SUCCESS_DELETE_ROUTE = "Route deleted successfully."
