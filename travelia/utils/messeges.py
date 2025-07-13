@@ -37,6 +37,12 @@ class MessagesES:
     ERROR_END_DATE_REQUIRED = "La fecha de fin es requerida."
     ERROR_CREATE_TRIP = "No se pudo crear el viaje."
     
+    #Error en la actualización de un viaje
+    ERROR_UPDATE_TRIP = "No se pudo actualizar el viaje."
+    
+    #Error en la eliminación de un viaje
+    ERROR_DELETE_TRIP = "No se pudo eliminar el viaje."
+    
     #Msj de valicacion generica
     GENERIC_VALIDATION_ERROR = "Datos inválidos"
     
@@ -52,6 +58,12 @@ class MessagesES:
     
     #exito en la creación de un viaje
     SUCCESS_CREATE_TRIP = "Viaje creado con éxito."
+    
+    #exito en la actualización de un viaje
+    SUCCESS_UPDATE_TRIP = "Viaje actualizado con éxito."
+    
+    #exito en la eliminación de un viaje
+    SUCCESS_DELETE_TRIP = "Viaje eliminado con éxito."
 
 class MessagesEN:
     # -Error messages-
@@ -92,6 +104,12 @@ class MessagesEN:
     ERROR_END_DATE_REQUIRED = "The end date is required."
     ERROR_CREATE_TRIP = "Could not create the trip."
     
+    #Error in the update of a trip
+    ERROR_UPDATE_TRIP = "Could not update the trip."
+    
+    #Error in the deletion of a trip
+    ERROR_DELETE_TRIP = "Could not delete the trip."
+    
     #Mssg of generic validation error
     GENERIC_VALIDATION_ERROR = "Invalid data"
     
@@ -107,4 +125,9 @@ class MessagesEN:
     
     #success in the creation of a trip
     SUCCESS_CREATE_TRIP = "Trip created successfully."
-
+    
+    #success in the update of a trip
+    SUCCESS_UPDATE_TRIP = "Trip updated successfully."
+    
+    #success in the deletion of a trip
+    SUCCESS_DELETE_TRIP = "Trip deleted successfully."
