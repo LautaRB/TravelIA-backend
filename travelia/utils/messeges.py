@@ -61,6 +61,20 @@ class MessagesES:
     #Error en la eliminación de una ruta
     ERROR_DELETE_ROUTE = "No se pudo eliminar la ruta."
     
+    #Error en los campos del medio
+    ERROR_MEDIA_NAME_REQUIRED = "El nombre es requerido."
+    ERROR_MEDIA_NAME_TYPE = "El nombre no puede ser solo números."
+    ERROR_MEDIA_TYPE = "La opción ingresada no es una elección válida."
+    
+    #Error en la creación de un medio
+    ERROR_CREATE_MEDIA = "No se pudo crear el medio."
+    
+    #Error en la actualización de un medio
+    ERROR_UPDATE_MEDIA = "No se pudo actualizar el medio."
+    
+    #Error en la eliminación de un medio
+    ERROR_DELETE_MEDIA = "No se pudo eliminar el medio."
+    
     #Msj de valicacion generica
     GENERIC_VALIDATION_ERROR = "Datos inválidos"
     
@@ -91,6 +105,15 @@ class MessagesES:
     
     #exito en la eliminación de una ruta
     SUCCESS_DELETE_ROUTE = "Ruta eliminada con éxito."
+    
+    #exito en la creación de un medio
+    SUCCESS_CREATE_MEDIA = "Medio creado con éxito."
+
+    #exito en la actualización de un medio
+    SUCCESS_UPDATE_MEDIA = "Medio actualizado con éxito."
+    
+    #exito en la eliminación de un medio
+    SUCCESS_DELETE_MEDIA = "Medio eliminado con éxito."
 
 class MessagesEN:
     # -Error messages-
@@ -155,6 +178,20 @@ class MessagesEN:
     #Error in the deletion of a route
     ERROR_DELETE_ROUTE = "Could not delete the route."
     
+    #Error in the fields of a media
+    ERROR_MEDIA_NAME_REQUIRED = "The name is required."
+    ERROR_MEDIA_NAME_TYPE = "The name cannot be only numbers."
+    ERROR_MEDIA_TYPE = "The selected option is not a valid choice."
+    
+    #Error in the creation of a media
+    ERROR_CREATE_MEDIA = "Could not create the media."
+    
+    #Error in the update of a media
+    ERROR_UPDATE_MEDIA = "Could not update the media."
+    
+    #Error in the deletion of a media
+    ERROR_DELETE_MEDIA = "Could not delete the media."
+    
     #Mssg of generic validation error
     GENERIC_VALIDATION_ERROR = "Invalid data"
     
@@ -185,3 +222,12 @@ class MessagesEN:
     
     #success in the deletion of a route
     SUCCESS_DELETE_ROUTE = "Route deleted successfully."
+    
+    #success in the creation of a media
+    SUCCESS_CREATE_MEDIA = "Media created successfully."
+    
+    #success in the update of a media
+    SUCCESS_UPDATE_MEDIA = "Media updated successfully."
+    
+    #success in the deletion of a media
+    SUCCESS_DELETE_MEDIA = "Media deleted successfully."

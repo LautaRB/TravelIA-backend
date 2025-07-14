@@ -26,6 +26,8 @@ def handle_validation_error(exc, response):
         'destino': handle_destination_errors,
         'km': handle_km_errors,
         'tiempo': handle_time_errors,
+        'nombre': handle_media_name_errors,
+        'tipo': handle_media_type_errors,
     }
     
     for field, handler in field_handlers.items():
@@ -202,6 +204,28 @@ def handle_time_errors(errors):
     if first_error == MessagesES.ERROR_KM_TIME_TYPE:
         return {
             "message": MessagesES.ERROR_KM_TIME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+
+def handle_media_name_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_MEDIA_NAME_TYPE:
+        return {
+            "message": MessagesES.ERROR_MEDIA_NAME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    
+    return {
+        "message": MessagesES.ERROR_MEDIA_NAME_REQUIRED,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+
+def handle_media_type_errors(errors):
+    
+    if errors[0].code == 'invalid_choice':
+        return {
+            "message": MessagesES.ERROR_MEDIA_TYPE,
             "status": status.HTTP_400_BAD_REQUEST
         }
 
