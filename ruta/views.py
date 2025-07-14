@@ -14,36 +14,44 @@ class RutaViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     
     def perform_create (self, serializer):
-        try:
-            if serializer.is_valid():
-                serializer.save()
-                return Response({
-                    'success': True,
-                    'message': MessagesES.SUCCESS_CREATE_ROUTE
-                })
-            raise serializer.ValidationError(serializer.errors)
-        except Exception as e:
+        serializer.save()
+            
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
             return Response({
-                'success': False,
-                'message': MessagesES.ERROR_CREATE_ROUTE,
-                'details': str(e)
-            }, status=400)
+                'success': True,
+                'message': MessagesES.SUCCESS_CREATE_ROUTE,
+                'details': serializer.data
+            }, status=status.HTTP_201_CREATED)
+
+        return Response({
+            'success': False,
+            'message': MessagesES.ERROR_CREATE_ROUTE,
+            'details': serializer.errors
+        },  status=status.HTTP_400_BAD_REQUEST)
     
     def perform_update(self, serializer):
-        try:
-            if serializer.is_valid():
-                serializer.save()
-                return Response({
-                    'success': True,
-                    'message': MessagesES.SUCCESS_UPDATE_ROUTE
-                })
-            raise serializer.ValidationError(serializer.errors)
-        except Exception as e:
+        serializer.save()
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            self.perform_update(serializer)
             return Response({
-                'success': False,
-                'message': MessagesES.ERROR_UPDATE_ROUTE,
-                'details': str(e)
-            }, status=400)
+                'success': True,
+                'message': MessagesES.SUCCESS_UPDATE_ROUTE,
+                'details': serializer.data
+            }, status=status.HTTP_200_OK)
+        
+        return Response({
+            'success': False,
+            'message': MessagesES.ERROR_UPDATE_ROUTE,
+            'details': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
     
     def perform_destroy(self, instance):
         instance.delete()
