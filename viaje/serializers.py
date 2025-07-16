@@ -23,6 +23,11 @@ class ViajeSerializer(serializers.ModelSerializer):
         fields = ['id', 'titulo', 'user', 'ruta', 'medio', 'fecha_inicio', 'fecha_fin']
         read_only_fields = ['user']
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['user'] = str(instance.user)
+        return rep
+    
     def validate_fecha_inicio(self, date):
         if date < date.today():
             raise serializers.ValidationError(MessagesES.ERROR_DATE_START_PAST)

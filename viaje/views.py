@@ -12,7 +12,10 @@ class ViajeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Viajes del usuario autenticado
-        return Viaje.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_superuser:
+            return Viaje.objects.all()
+        return Viaje.objects.filter(user=user)
 
     def perform_create(self, serializer):
         # Asocia automáticamente el nuevo viaje al user logueado
