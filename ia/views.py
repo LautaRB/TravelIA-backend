@@ -1,13 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .services import generar_plan_viaje  # lógica que vos vas a definir
+from .serializers import PlanViajeSerializer
+from .services import generar_plan_viaje
 
-# Create your views here.
-class PlanearViajeIA(APIView):
+class PlanViajeAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        datos_usuario = request.data
-        respuesta_ia = generar_plan_viaje(datos_usuario, user=request.user)
-        return Response(respuesta_ia)
+        serializer = PlanViajeSerializer(data=request.data)
+        if serializer.is_valid():
+            plan = generar_plan_viaje(serializer.validated_data, request.user)
+            return Response(plan)
+        return Response(serializer.errors, status=400)
