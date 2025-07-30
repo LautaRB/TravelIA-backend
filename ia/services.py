@@ -3,7 +3,8 @@ from django.conf import settings
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
 
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-flash')
+                            # gemini-1.5-pro version más potente
 
 def generar_plan_viaje(datos, user):
     prompt = f"""Hola! Quiero organizar un viaje del {datos['fecha_inicio']} al {datos['fecha_fin']}
