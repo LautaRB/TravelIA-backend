@@ -5,9 +5,9 @@ from .models import Medio
 class MedioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medio
-        fields = ['id', 'nombre', 'tipo']
+        fields = ['id', 'nombre_Medio', 'tipo']
     
-    def validate_nombre(self, value):
+    def validate_nombre_Medio(self, value):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_MEDIA_NAME_TYPE)
         return value

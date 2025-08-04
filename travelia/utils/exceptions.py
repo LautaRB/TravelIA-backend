@@ -22,11 +22,12 @@ def handle_validation_error(exc, response):
         'fecha_inicio': handle_start_date_errors,
         'fecha_fin': handle_end_date_errors,
         'fechas': handle_fechas_errors,
+        'nombre_Ruta': handle_origin_errors,
         'origen': handle_origin_errors,
         'destino': handle_destination_errors,
         'km': handle_km_errors,
         'tiempo': handle_time_errors,
-        'nombre': handle_media_name_errors,
+        'nombre_Medio': handle_media_name_errors,
         'tipo': handle_media_type_errors,
     }
     
@@ -158,6 +159,20 @@ def handle_end_date_errors(errors):
 def handle_fechas_errors(errors):
     return {
         "message": MessagesES.ERROR_DATES,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+
+def handle_route_name_errors(errors):
+    first_error = str(errors[0])
+    
+    if first_error == MessagesES.ERROR_ROUTE_NAME_TYPE:
+        return {
+            "message": MessagesES.ERROR_ROUTE_NAME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+        
+    return {
+        "message": MessagesES.ERROR_ROUTE_NAME_REQUIRED,
         "status": status.HTTP_400_BAD_REQUEST
     }
 

@@ -3,5 +3,5 @@ from .models import Ruta
 
 # Register your models here.
 @admin.register(Ruta)
-class ViajeAdmin(admin.ModelAdmin):
-    list_display = ('origen', 'destino', 'km', 'tiempo')
+class RutaAdmin(admin.ModelAdmin):
+    list_display = ('nombre_Ruta', 'origen', 'destino', 'km', 'tiempo')

@@ -46,6 +46,8 @@ class MessagesES:
     ERROR_DELETE_TRIP = "No se pudo eliminar el viaje."
     
     #Error en los campos de la ruta
+    ERROR_ROUTE_NAME_REQUIRED = "El nombre de la ruta es requerido."
+    ERROR_ROUTE_NAME_TYPE = "El nombre de la ruta no puede ser solo números."
     ERROR_ORIGIN_REQUIRED = "El origen es requerido."
     ERROR_ORIGIN_TYPE = "El origen no puede ser solo números."
     ERROR_DESTINATION_REQUIRED = "El destino es requerido."
@@ -163,6 +165,8 @@ class MessagesEN:
     ERROR_DELETE_TRIP = "Could not delete the trip."
     
     #Error in the fields of a route
+    ERROR_ROUTE_NAME_REQUIRED = "The name of the route is required."
+    ERROR_ROUTE_NAME_TYPE = "The name of the route cannot be only numbers."
     ERROR_ORIGIN_REQUIRED = "The origin is required."
     ERROR_ORIGIN_TYPE = "The origin cannot be only numbers."
     ERROR_DESTINATION_REQUIRED = "The destination is required."
