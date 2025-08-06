@@ -4,7 +4,6 @@ from rest_framework import status
 from travelia.utils.messeges import MessagesES
 from .models import Viaje
 from .serializers import ViajeSerializer
-from ia.serializers import PlanViajeSerializer
 from ia.services import generar_plan_viaje
 
 # Create your views here.
@@ -24,11 +23,20 @@ class ViajeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
     
     def create(self, request, *args, **kwargs):
-        serializer = PlanViajeSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             plan = generar_plan_viaje(serializer.validated_data, request.user)
-            return Response(plan)
-        return Response(serializer.errors, status=400) # Falta el manejo de errores
+            self.perform_create(serializer)
+            return Response({
+                'success': True,
+                'message': MessagesES.SUCCESS_CREATE_TRIP,
+                'details': plan
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            'success': False,
+            'message': MessagesES.ERROR_CREATE_TRIP,
+            'details': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
     
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
