@@ -11,10 +11,11 @@ class Medio(models.Model):
         ("SIN DEFINIR", "Sin definir"),
         ("PÚBLICO COMBINADO", "Público combinado"),
         ("PRIVADO COMBINADO", "Privado combinado"),
+        ("SIN DEFINIR", "Sin definir"),
     ]
 
     nombre_Medio = models.CharField(max_length=50)
-    tipo = models.CharField(choices=TYPE_CHOICES, default="Sin definir", max_length=20)
+    tipo = models.CharField(choices=TYPE_CHOICES, default="SIN DEFINIR", max_length=20)
 
     def __str__(self):
         return f"{self.nombre_Medio} - {self.tipo}"
