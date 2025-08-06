@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from ruta.models import Ruta
-from medio.models import Medio
 
 User = get_user_model()
 
@@ -9,8 +7,8 @@ User = get_user_model()
 class Viaje(models.Model):
     titulo = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="viajes")
-    ruta = models.ForeignKey(Ruta, on_delete=models.SET_NULL, null=True, blank=True)
-    medio = models.ForeignKey(Medio, on_delete=models.SET_NULL, null=True, blank=True)
+    origen_Viaje = models.CharField(max_length=100)
+    destino_Viaje = models.CharField(max_length=100)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
 
