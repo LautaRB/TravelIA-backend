@@ -5,6 +5,7 @@ from travelia.utils.messeges import MessagesES
 from travelia.utils.permissions import IsAdminOrReadOnly
 from .models import Ruta
 from .serializers import RutaSerializer
+from .services import crear_ruta
 
 # Create your views here.
 class RutaViewSet(viewsets.ModelViewSet):
@@ -19,7 +20,8 @@ class RutaViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            self.perform_create(serializer)
+            #self.perform_create(serializer)
+            crear_ruta(serializer.validated_data)
             return Response({
                 'success': True,
                 'message': MessagesES.SUCCESS_CREATE_ROUTE,

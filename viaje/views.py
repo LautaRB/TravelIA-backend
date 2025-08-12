@@ -30,7 +30,8 @@ class ViajeViewSet(viewsets.ModelViewSet):
             return Response({
                 'success': True,
                 'message': MessagesES.SUCCESS_CREATE_TRIP,
-                'details': plan
+                'details': serializer.data,
+                'plan': plan
             }, status=status.HTTP_201_CREATED)
         return Response({
             'success': False,

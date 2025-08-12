@@ -36,3 +36,7 @@ def generar_plan_viaje(datos, user):
     return {
         "contenido": contenido,
     }
+
+
+#def generar_ruta(plan):
+    

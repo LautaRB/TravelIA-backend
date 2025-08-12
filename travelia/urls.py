@@ -14,5 +14,4 @@ urlpatterns = [
     path('api/', include(router.urls)), #Rutas de los viajes, medios y rutas
     path('api/admin/', admin.site.urls), # Rutas del Administrador (superuser)
     path('api/users/', include('user.urls')), # Rutas principales del usuario
-    path('api/ia/', include('ia.urls')), # Rutas de la IA
 ]
