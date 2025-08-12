@@ -1,8 +1,8 @@
 from .models import Ruta
+from travelia.utils.messeges import MessagesES
 
 def crear_ruta(ruta):
     ruta, creada = Ruta.objects.get_or_create(
-        viaje_id=ruta['viaje_id'],
         origen=ruta['origen'],
         destino=ruta['destino'],
         defaults={
@@ -12,9 +12,11 @@ def crear_ruta(ruta):
         }
     )
     
+    #Si creada es true, entonces se creo una nueva ruta
+    #Si creada es false, entonces la ruta ya existe
     if creada:
-        print("Ruta creada")
+        print(MessagesES.SUCCESS_CREATE_ROUTE)
+        return ruta, creada
     else:
-        print("Ya existe esta ruta")
-
-    return ruta
+        print(MessagesES.ERROR_ROUTE_EXISTS)
+        return ruta, creada

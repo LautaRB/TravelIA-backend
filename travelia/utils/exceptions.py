@@ -17,8 +17,6 @@ def handle_validation_error(exc, response):
         'email': handle_email_errors,
         'refresh': handle_refresh_errors,
         'titulo': handle_title_errors,
-        'ruta': handle_route_errors,
-        'medio': handle_media_errors,
         'fecha_inicio': handle_start_date_errors,
         'fecha_fin': handle_end_date_errors,
         'fechas': handle_fechas_errors,
@@ -102,19 +100,6 @@ def handle_title_errors(errors):
         }
     return {
         "message": MessagesES.ERROR_TITLE_REQUIRED,
-        "status": status.HTTP_400_BAD_REQUEST
-    }
-
-
-def handle_route_errors(errors):
-    return {
-        "message": MessagesES.ERROR_ROUTE_REQUIRED,
-        "status": status.HTTP_400_BAD_REQUEST
-    }
-    
-def handle_media_errors(errors):
-    return {
-        "message": MessagesES.ERROR_MEDIA_REQUIRED,
         "status": status.HTTP_400_BAD_REQUEST
     }
 

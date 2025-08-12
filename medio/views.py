@@ -5,6 +5,7 @@ from travelia.utils.messeges import MessagesES
 from travelia.utils.permissions import IsAdminOrReadOnly
 from .models import Medio
 from .serializers import MedioSerializer
+from .services import crear_medio
 
 # Create your views here.
 class MedioViewSet(viewsets.ModelViewSet):
@@ -16,21 +17,18 @@ class MedioViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            self.perform_create(serializer)
+            creado = crear_medio(serializer.validated_data)
             return Response({
                 'success': True,
-                'message': MessagesES.SUCCESS_CREATE_MEDIA,
+                'message': MessagesES.SUCCESS_CREATE_MEDIA if creado[1] else MessagesES.ERROR_MEDIA_EXISTS,
                 'details': serializer.data
-            }, status=status.HTTP_201_CREATED)
+            }, status=status.HTTP_201_CREATED if creado[1] else status.HTTP_200_OK)
         
         return Response({
             'success': False,
             'message': MessagesES.ERROR_CREATE_MEDIA,
             'details': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
-    
-    def perform_create(self, serializer):
-       serializer.save()
     
     def perform_update(self, serializer):
         serializer.save()

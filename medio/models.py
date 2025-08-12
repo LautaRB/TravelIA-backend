@@ -2,8 +2,6 @@ from django.db import models
 from viaje.models import Viaje
 
 class Medio(models.Model):
-    viaje = models.ForeignKey("viaje.Viaje", on_delete=models.CASCADE, related_name="medios")
-    
     TYPE_CHOICES = [
         ("TERRESTRE", "Terrestre"),
         ("MARITIMO", "Marítimo"),

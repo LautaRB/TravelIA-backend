@@ -13,20 +13,16 @@ class RutaViewSet(viewsets.ModelViewSet):
     serializer_class = RutaSerializer
     # Sólo STAFF (superuser) puede crear/editar/eliminar rutas 
     permission_classes = [IsAdminOrReadOnly]
-    
-    def perform_create (self, serializer):
-        serializer.save()
             
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            #self.perform_create(serializer)
-            crear_ruta(serializer.validated_data)
+            creada = crear_ruta(serializer.validated_data)
             return Response({
                 'success': True,
-                'message': MessagesES.SUCCESS_CREATE_ROUTE,
+                'message': MessagesES.SUCCESS_CREATE_ROUTE if creada[1] else MessagesES.ERROR_ROUTE_EXISTS,
                 'details': serializer.data
-            }, status=status.HTTP_201_CREATED)
+            }, status=status.HTTP_201_CREATED if creada[1] else status.HTTP_200_OK)
 
         return Response({
             'success': False,

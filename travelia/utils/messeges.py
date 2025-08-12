@@ -31,8 +31,6 @@ class MessagesES:
     #Error en los campos de un viaje
     ERROR_TITLE_REQUIRED = "El título es requerido."
     ERROR_TITLE_TYPE = "El título no puede ser solo números."
-    ERROR_ROUTE_REQUIRED = "La ruta es requerida."
-    ERROR_MEDIA_REQUIRED = "El medio es requerido."
     ERROR_START_DATE_REQUIRED = "La fecha de inicio es requerida."
     ERROR_END_DATE_REQUIRED = "La fecha de fin es requerida."
     
@@ -57,6 +55,9 @@ class MessagesES:
     #Error en la creación de una ruta
     ERROR_CREATE_ROUTE = "No se pudo crear la ruta."
     
+    #Error ruta existente
+    ERROR_ROUTE_EXISTS = "Ya existe esta ruta"
+    
     #Error en la actualización de una ruta
     ERROR_UPDATE_ROUTE = "No se pudo actualizar la ruta."
     
@@ -70,6 +71,9 @@ class MessagesES:
     
     #Error en la creación de un medio
     ERROR_CREATE_MEDIA = "No se pudo crear el medio."
+    
+    #Error medio existente
+    ERROR_MEDIA_EXISTS = "Ya existe este medio"
     
     #Error en la actualización de un medio
     ERROR_UPDATE_MEDIA = "No se pudo actualizar el medio."
@@ -150,8 +154,6 @@ class MessagesEN:
     #Error in the fields of a trip
     ERROR_TITLE_REQUIRED = "The title is required."
     ERROR_TITLE_TYPE = "The title cannot be only numbers."
-    ERROR_ROUTE_REQUIRED = "The route is required."
-    ERROR_MEDIA_REQUIRED = "The media is required."
     ERROR_START_DATE_REQUIRED = "The start date is required."
     ERROR_END_DATE_REQUIRED = "The end date is required."
     
@@ -176,6 +178,9 @@ class MessagesEN:
     #Error in the creation of a route
     ERROR_CREATE_ROUTE = "Could not create the route."
     
+    #Error route already exists
+    ERROR_ROUTE_EXISTS = "Route already exists"
+    
     #Error in the update of a route
     ERROR_UPDATE_ROUTE = "Could not update the route."
     
@@ -189,6 +194,9 @@ class MessagesEN:
     
     #Error in the creation of a media
     ERROR_CREATE_MEDIA = "Could not create the media."
+    
+    #Error media already exists
+    ERROR_MEDIA_EXISTS = "Media already exists"
     
     #Error in the update of a media
     ERROR_UPDATE_MEDIA = "Could not update the media."
