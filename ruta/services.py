@@ -3,10 +3,10 @@ from travelia.utils.messeges import MessagesES
 
 def crear_ruta(ruta):
     ruta, creada = Ruta.objects.get_or_create(
-        origen=ruta['origen'],
-        destino=ruta['destino'],
+        nombre_Ruta=ruta['nombre_Ruta'],
         defaults={
-            "nombre_Ruta": ruta['nombre_Ruta'],
+            "origen":ruta['origen'],
+            "destino":ruta['destino'],
             "km": ruta['km'],
             "tiempo": ruta['tiempo']
         }

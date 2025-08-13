@@ -9,7 +9,7 @@ class ViajeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen_Viaje', 'destino_Viaje', 'fecha_inicio', 'fecha_fin']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin']
         read_only_fields = ['user']
 
     def to_representation(self, instance):
@@ -37,12 +37,12 @@ class ViajeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(MessagesES.ERROR_TITLE_TYPE)
         return value
     
-    def validate_origen_Viaje(self, value):
+    def validate_origen(self, value):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_ORIGIN_TYPE)
         return value
     
-    def validate_destino_Viaje(self, value):
+    def validate_destino(self, value):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
         return value
