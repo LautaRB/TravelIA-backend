@@ -1,5 +1,4 @@
 from django.db import models
-from viaje.models import Viaje
 
 class Medio(models.Model):
     TYPE_CHOICES = [

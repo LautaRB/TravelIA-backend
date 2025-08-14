@@ -25,7 +25,8 @@ class ViajeViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            plan = generar_plan_viaje(serializer.validated_data, request.user)
+            plan = generar_plan_viaje(serializer.validated_data)
+            print(serializer.validated_data)
             self.perform_create(serializer)
             return Response({
                 'success': True,

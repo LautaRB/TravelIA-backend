@@ -9,7 +9,7 @@ genai.configure(api_key=settings.GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
                             # gemini-1.5-pro version más potente
 
-def generar_plan_viaje(datos, user):
+def generar_plan_viaje(datos):
     prompt = f"""Hola! Quiero organizar un viaje del {datos['fecha_inicio']} al {datos['fecha_fin']}, partiendo desde {datos['origen']} hasta {datos['destino']}.
     Necesito que me recomiendes 3 rutas y 3 medios de transporte ideales para este recorrido.
     Para cada ruta, incluí:

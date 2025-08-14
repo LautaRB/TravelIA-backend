@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from ruta.models import Ruta
+from medio.models import Medio
 
 User = get_user_model()
 
@@ -11,6 +13,8 @@ class Viaje(models.Model):
     destino = models.CharField(max_length=100)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+    ruta = models.ForeignKey(Ruta, on_delete=models.SET_NULL, null=True, blank=True, related_name="viajes")
+    medio = models.ForeignKey(Medio, on_delete=models.SET_NULL, null=True, blank=True, related_name="viajes")
 
     def __str__(self):
         return f"{self.titulo} ({self.user.username})"

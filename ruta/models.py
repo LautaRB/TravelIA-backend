@@ -1,5 +1,4 @@
 from django.db import models
-from viaje.models import Viaje
 
 # Create your models here.
 class Ruta(models.Model):
