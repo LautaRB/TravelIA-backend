@@ -2,6 +2,7 @@ import google.generativeai as genai
 from django.conf import settings
 import json
 from ruta.services import crear_ruta
+from medio.services import crear_medio
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
 
@@ -46,6 +47,16 @@ def generar_plan_viaje(datos, user):
     
     for ruta in rutas:
         crear_ruta(ruta)
+    
+    medios = [None] * len(contenido['medios_transporte'])
+    for i in range(len(contenido['medios_transporte'])):
+        medios[i] = {
+            "tipo": contenido['medios_transporte'][i]['tipo'],
+            "nombre_Medio": contenido['medios_transporte'][i]['nombre']
+        }
+    
+    for medio in medios:
+        crear_medio(medio)
     
     return {
         "contenido": contenido,

@@ -4,7 +4,9 @@ from travelia.utils.messeges import MessagesES
 def crear_medio(medio):
     medio, creado = Medio.objects.get_or_create(
         nombre_Medio=medio['nombre_Medio'],
-        tipo=medio['tipo'],
+        defaults={
+            "tipo": medio['tipo']
+        }
     )
     #Si creado es true, entonces se creo un nuevo medio
     #Si creado es false, entonces el medio ya existe
