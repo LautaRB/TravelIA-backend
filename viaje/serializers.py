@@ -9,7 +9,7 @@ class ViajeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin', 'ruta', 'medio']
         read_only_fields = ['user']
 
     def to_representation(self, instance):
