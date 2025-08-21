@@ -26,45 +26,31 @@ class ViajeViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            plan = generar_plan_viaje(serializer.validated_data)
-            
-            print("Elija una de las 3 opciones de rutas:\n", plan['contenido']['rutas'])
-            elecionRuta = input()
-            if elecionRuta == "1":
-                ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][0]['nombre'])
-            elif elecionRuta == "2":
-                ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][1]['nombre'])
-            elif elecionRuta == "3":
-                ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][2]['nombre'])
-            
-            print("Elija una de las 3 opciones de medios:\n", plan['contenido']['medios_transporte'])
-            eleccionMedio = input()
-            if eleccionMedio == "1":
-                medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios_transporte'][0]['nombre'])
-            elif eleccionMedio == "2":
-                medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios_transporte'][1]['nombre'])
-            elif eleccionMedio == "3":
-                medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios_transporte'][2]['nombre'])
-            
-            serializer = ViajeSerializer(data={
-                'titulo': serializer.validated_data['titulo'],
-                'origen': serializer.validated_data['origen'],
-                'destino': serializer.validated_data['destino'],
-                'fecha_inicio': serializer.validated_data['fecha_inicio'],
-                'fecha_fin': serializer.validated_data['fecha_fin'],
-                'ruta': ruta,
-                'medio': medio
-            })
-            
-            #print("viaje creado: \n", serializer)
-            self.perform_create(serializer)
-            return Response({
-                'success': True,
-                'message': MessagesES.SUCCESS_CREATE_TRIP,
-                'details': serializer.data,
-                #'plan': plan
-            }, status=status.HTTP_201_CREATED)
+        serializer.is_valid(raise_exception=True)
+
+        plan = generar_plan_viaje(serializer.validated_data)
+
+        print("Elija una de las 3 opciones de rutas:\n", plan['contenido']['rutas'])
+        eleccionRuta = input()
+        ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][int(eleccionRuta)-1]['nombre'])
+
+        print("Elija una de las 3 opciones de medios:\n", plan['contenido']['medios_transporte'])
+        eleccionMedio = input()
+        medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios_transporte'][int(eleccionMedio)-1]['nombre'])
+
+        final_serializer = self.get_serializer(data={
+            **serializer.validated_data,
+            'ruta': ruta.id,
+            'medio': medio.id
+        })
+        final_serializer.is_valid(raise_exception=True)
+        self.perform_create(final_serializer)
+
+        return Response({
+            'success': True,
+            'message': MessagesES.SUCCESS_CREATE_TRIP,
+            'details': final_serializer.data,
+        }, status=status.HTTP_201_CREATED)
         return Response({
             'success': False,
             'message': MessagesES.ERROR_CREATE_TRIP,

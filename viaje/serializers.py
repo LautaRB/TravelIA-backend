@@ -1,12 +1,16 @@
 from rest_framework import serializers
 import datetime
 from .models import Viaje
+from ruta.models import Ruta
+from medio.models import Medio
 from travelia.utils.messeges import MessagesES
 
 
 class ViajeSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
+    ruta = serializers.PrimaryKeyRelatedField(queryset=Ruta.objects.all(), required=False, allow_null=True)
+    medio = serializers.PrimaryKeyRelatedField(queryset=Medio.objects.all(), required=False, allow_null=True)
+    
     class Meta:
         model = Viaje
         fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin', 'ruta', 'medio']
