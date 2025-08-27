@@ -4,11 +4,10 @@ from django.contrib.auth.hashers import make_password
 from travelia.utils.messeges import MessagesES
 
 class UserSerializer(serializers.ModelSerializer):
-    profile_picture = serializers.ImageField(use_url=True)
-    
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'email', 'role', 'profile_picture']
+        profile_picture = serializers.ImageField(use_url=True, required=False, allow_null=True)
         extra_kwargs = {
                         'password': {'write_only': True},
                         'email': {'required': True}
