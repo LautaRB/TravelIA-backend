@@ -4,14 +4,16 @@ from django.contrib.auth.hashers import make_password
 from travelia.utils.messeges import MessagesES
 
 class UserSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    remove_profile_picture = serializers.BooleanField(write_only=True, required=False, default=False)
+    
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email', 'role', 'profile_picture']
-        profile_picture = serializers.ImageField(use_url=True, required=False, allow_null=True)
+        fields = ['id', 'username', 'password', 'email', 'role', 'profile_picture', 'remove_profile_picture']
         extra_kwargs = {
-                        'password': {'write_only': True},
-                        'email': {'required': True}
-                        }
+            'password': {'write_only': True},
+            'email': {'required': True}
+        }
     
     def validate_username(self, value):
         if value.isdigit():
@@ -30,9 +32,10 @@ class UserSerializer(serializers.ModelSerializer):
         if password:
             instance.set_password(password)
 
-        profile_picture = validated_data.get('profile_picture', None)
-        if profile_picture:
-            instance.profile_picture = profile_picture
+        if validated_data.get("remove_profile_picture"):
+            instance.profile_picture = "profile_pictures/default.png"
+        elif "profile_picture" in validated_data:
+            instance.profile_picture = validated_data.get("profile_picture", instance.profile_picture)
         
         instance.save()
         return instance
