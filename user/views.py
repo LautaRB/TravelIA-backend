@@ -6,6 +6,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer
 from travelia.utils.messeges import MessagesES
+from django.contrib.auth import get_user_model
+from django.conf import settings
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
+User = get_user_model()
 
 # Create your views here.
 class ProtectedView(APIView): # clase para la autenticación
@@ -94,3 +100,37 @@ def logout(request):
             'message': MessagesES.ERROR_LOGOUT,
             'details': str(e)
         }, status=400)
+        
+@api_view(['POST'])
+def google_login(request):
+    try:
+        token = request.data.get("token")
+
+        if not token:
+            return Response(
+                {"success": False, "message": "Falta token de Google"}
+                , status=400)
+
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
+
+        email = idinfo.get("email")
+        username = idinfo.get("name")
+        picture = idinfo.get("picture")
+
+        user, created = User.objects.get_or_create(email=email, defaults={
+            "username": username,
+            "profile_picture": picture if hasattr(User, "profile_picture") else None
+        })
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "success": True,
+            "message": "Login con Google exitoso",
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "created": created
+        })
+
+    except Exception as e:
+        return Response({"success": False, "message": "Error en login con Google", "details": str(e)}, status=400)
