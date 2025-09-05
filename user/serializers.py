@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import User
 from django.contrib.auth.hashers import make_password
 from travelia.utils.messeges import MessagesES
+from travelia.settings import DEFAULT_PROFILE_PICTURE
 
 class UserSerializer(serializers.ModelSerializer):
-    profile_picture = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    profile_picture = serializers.SerializerMethodField()
     remove_profile_picture = serializers.BooleanField(write_only=True, required=False, default=False)
     
     class Meta:
@@ -14,6 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             'email': {'required': True}
         }
+    
+    def get_profile_picture(self, obj):
+        return obj.profile_picture or DEFAULT_PROFILE_PICTURE
     
     def validate_username(self, value):
         if value.isdigit():

@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.utils.html import format_html
+from django.utils.html import mark_safe
 from .models import User
+from travelia.settings import DEFAULT_PROFILE_PICTURE
 
 # Register your models here.
 @admin.register(User)
@@ -18,11 +19,14 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = ("username", "email", "role", "profile_picture_preview")
 
-    def profile_picture_preview(self, obj):
+    def get_profile_picture(self, obj):
         if obj.profile_picture:
-            return format_html(
-                '<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 50%;" />',
-                obj.profile_picture.url
-            )
-        return "—"
+            return obj.profile_picture.url
+        return DEFAULT_PROFILE_PICTURE
+    
+    def profile_picture_preview(self, obj):
+        url = obj.profile_picture or DEFAULT_PROFILE_PICTURE
+        return mark_safe(
+            f'<img src="{url}" width="50" height="50" style="object-fit:cover;border-radius:50%" />'
+        )
     profile_picture_preview.short_description = "Profile Picture"

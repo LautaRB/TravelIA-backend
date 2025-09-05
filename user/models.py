@@ -33,7 +33,7 @@ class User(AbstractUser):
     ]
     email = models.EmailField(unique=True)
     role = models.CharField(choices=ROLE_CHOICES, default= "USER", max_length=10)
-    profile_picture = models.ImageField(upload_to='profile_pictures', default='profile_pictures/default.png', blank=True, null=True)
+    profile_picture = models.URLField(max_length=200, default="profile_pictures/default.png",blank=True, null=True)
     objects = UserManager() 
 
     def __str__(self): # Para ver el nombre y el rol del usuario en la BD

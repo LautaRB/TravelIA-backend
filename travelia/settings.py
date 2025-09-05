@@ -20,9 +20,12 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#Media
+# Media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Default profile picture
+DEFAULT_PROFILE_PICTURE = os.getenv("DEFAULT_PROFILE_PICTURE")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -36,7 +39,7 @@ DEBUG = True
 # API Keys
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-#Google Auth
+# Google Auth
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
