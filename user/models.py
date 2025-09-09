@@ -1,10 +1,8 @@
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-# Create your models here.    
 class UserManager(BaseUserManager):
-    def create_user(self, username, email=None, password=None, **extra_fields): #campos personalizados cuando se crea un usuario
+    def create_user(self, username, email=None, password=None, **extra_fields):
         if not email:
             raise ValueError("El usuario debe tener un email")
         email = self.normalize_email(email)
@@ -14,7 +12,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email=None, password=None, **extra_fields): #campos personalizados cuando se crea un superusuario
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'SUPERUSER')
@@ -31,10 +29,26 @@ class User(AbstractUser):
         ("SUPERUSER", "SUPERUSER"),
         ("USER", "USER"),
     ]
-    email = models.EmailField(unique=True)
-    role = models.CharField(choices=ROLE_CHOICES, default= "USER", max_length=10)
-    profile_picture = models.URLField(max_length=200, default="profile_pictures/default.png",blank=True, null=True)
-    objects = UserManager() 
 
-    def __str__(self): # Para ver el nombre y el rol del usuario en la BD
-        return f"{self.username} - " + self.role
+    email = models.EmailField(unique=True)
+    role = models.CharField(choices=ROLE_CHOICES, default="USER", max_length=10)
+
+    profile_picture = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        default="profile_pictures/default.png"
+    )
+
+    objects = UserManager()
+
+    def __str__(self):
+        return f"{self.username} - {self.role}"
+
+    @property
+    def profile_picture_url(self):
+        if self.profile_picture:
+            if self.profile_picture.startswith("http"):
+                return self.profile_picture 
+            return f"/media/{self.profile_picture}"
+        return "/media/profile_pictures/default.png"
