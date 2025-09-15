@@ -13,6 +13,7 @@ class Medio(models.Model):
 
     nombre_Medio = models.CharField(max_length=50)
     tipo = models.CharField(choices=TYPE_CHOICES, default="SIN DEFINIR", max_length=20)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.nombre_Medio} - {self.tipo}"

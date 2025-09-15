@@ -68,6 +68,7 @@ class MessagesES:
     ERROR_MEDIA_NAME_REQUIRED = "El nombre es requerido."
     ERROR_MEDIA_NAME_TYPE = "El nombre no puede ser solo números."
     ERROR_MEDIA_TYPE = "La opción ingresada no es una elección válida."
+    ERROR_MEDIA_PRICE = "El precio debe ser un número decimal válido."
     
     #Error en la creación de un medio
     ERROR_CREATE_MEDIA = "No se pudo crear el medio."
@@ -191,6 +192,7 @@ class MessagesEN:
     ERROR_MEDIA_NAME_REQUIRED = "The name is required."
     ERROR_MEDIA_NAME_TYPE = "The name cannot be only numbers."
     ERROR_MEDIA_TYPE = "The selected option is not a valid choice."
+    ERROR_MEDIA_PRICE = "The price must be a valid decimal number."
     
     #Error in the creation of a media
     ERROR_CREATE_MEDIA = "Could not create the media."

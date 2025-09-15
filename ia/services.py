@@ -18,9 +18,10 @@ def generar_plan_viaje(datos):
     3) Y la duración estimada en horas.
     
     Para cada medio de transporte, indicá:
-    1)El tipo de transporte (ej: TERRESTRE, AEREO MARITIMO, etc.)
-    2) Y su nombre (ej: Auto, Avión, Buquebus, etc.)
-
+    1) El tipo de transporte (ej: TERRESTRE, AEREO MARITIMO, etc.)
+    2) Su nombre (ej: Auto, Avión, Buquebus, etc.)
+    3) Y su precio en pesos argentinos.
+    
     Devolveme la respuesta exclusivamente en formato JSON válido, sin explicaciones ni texto adicional.
     ¡Gracias!"""
 
@@ -48,11 +49,14 @@ def generar_plan_viaje(datos):
     for ruta in rutas:
         crear_ruta(ruta)
     
+    print(contenido['medios_transporte'])
+    
     medios = [None] * len(contenido['medios_transporte'])
     for i in range(len(contenido['medios_transporte'])):
         medios[i] = {
             "tipo": contenido['medios_transporte'][i]['tipo'],
-            "nombre_Medio": contenido['medios_transporte'][i]['nombre']
+            "nombre_Medio": contenido['medios_transporte'][i]['nombre'],
+            "precio": contenido['medios_transporte'][i]['precio_ars']
         }
     
     for medio in medios:
