@@ -44,9 +44,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".vercel.app,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,.onrender.com").split(",")
 
-CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('VERCEL_URL')}"] if os.getenv("VERCEL_URL") else []
+CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"] if os.getenv("RENDER_EXTERNAL_HOSTNAME") else []
 
 # Application definition
 

@@ -1,0 +1,1 @@
+web: gunicorn travelia.wsgi:application --preload
