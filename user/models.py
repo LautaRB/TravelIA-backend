@@ -49,7 +49,5 @@ class User(AbstractUser):
     @property
     def profile_picture_url(self):
         if self.profile_picture:
-            if self.profile_picture.startswith("http"):
-                return self.profile_picture 
-            return f"/media/{self.profile_picture}"
+            return self.profile_picture.url
         return "/media/profile_pictures/default.png"
