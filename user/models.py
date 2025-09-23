@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email=None, password=None, **extra_fields):
@@ -33,11 +34,11 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.CharField(choices=ROLE_CHOICES, default="USER", max_length=10)
 
-    profile_picture = models.CharField(
-        max_length=500,
+    profile_picture = CloudinaryField(
+        "profile_picture",
+        default="default_opw0zi",
         blank=True,
-        null=True,
-        default="profile_pictures/default.png"
+        null=True
     )
 
     objects = UserManager()
