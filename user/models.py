@@ -50,4 +50,4 @@ class User(AbstractUser):
     def profile_picture_url(self):
         if self.profile_picture:
             return self.profile_picture.url
-        return "/media/profile_pictures/default.png"
+        return None
