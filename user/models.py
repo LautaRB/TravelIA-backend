@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from cloudinary.models import CloudinaryField
+import cloudinary
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email=None, password=None, **extra_fields):
@@ -36,7 +37,6 @@ class User(AbstractUser):
 
     profile_picture = CloudinaryField(
         "profile_picture",
-        default="default_opw0zi",
         blank=True,
         null=True
     )
@@ -50,4 +50,4 @@ class User(AbstractUser):
     def profile_picture_url(self):
         if self.profile_picture:
             return self.profile_picture.url
-        return None
+        return cloudinary.CloudinaryImage("default_opw0zi").build_url()
