@@ -17,15 +17,18 @@ import os
 import dj_database_url
 import firebase_admin
 from firebase_admin import credentials
+import json
 
 load_dotenv()
 
-cred = credentials.Certificate("travelia-frontend-firebase-adminsdk-fbsvc-4745ea4704.json")
+firebase_credentials = os.getenv("FIREBASE_CREDENTIALS")
 
-try:
-    firebase_admin.get_app()
-except ValueError:
+if firebase_credentials:
+    cred_dict = json.loads(firebase_credentials)
+    cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
+else:
+    print("⚠️  Advertencia: FIREBASE_CREDENTIALS no está configurada. Firebase no se inicializó.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
