@@ -15,8 +15,17 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 import dj_database_url
+import firebase_admin
+from firebase_admin import credentials
 
 load_dotenv()
+
+cred = credentials.Certificate("travelia-frontend-firebase-adminsdk-fbsvc-4745ea4704.json")
+
+try:
+    firebase_admin.get_app()
+except ValueError:
+    firebase_admin.initialize_app(cred)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

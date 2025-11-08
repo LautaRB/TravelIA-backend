@@ -7,9 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer
 from travelia.utils.messeges import MessagesES
 from django.contrib.auth import get_user_model
-from django.conf import settings
-from google.oauth2 import id_token
-from google.auth.transport import requests
+from firebase_admin import auth
+from firebase_admin._auth_utils import InvalidIdTokenError
 
 User = get_user_model()
 
@@ -102,35 +101,52 @@ def logout(request):
         }, status=400)
         
 @api_view(['POST'])
-def google_login(request):
+def firebase_login(request): #Google Login
     try:
         token = request.data.get("token")
 
         if not token:
             return Response(
-                {"success": False, "message": "Falta token de Google"}
-                , status=400)
+                {"success": False, "message": "Falta token de Firebase"},
+                status=400
+            )
 
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token.get("uid")
+        email = decoded_token.get("email")
+        username = decoded_token.get("name") or email.split("@")[0]
+        picture = decoded_token.get("picture")
 
-        email = idinfo.get("email")
-        username = idinfo.get("name")
-        picture = idinfo.get("picture")
+        if not email:
+            return Response(
+                {"success": False, "message": "El token de Firebase no contiene email válido"},
+                status=400
+            )
 
         user, created = User.objects.get_or_create(email=email, defaults={
             "username": username,
-            "profile_picture": picture if hasattr(User, "profile_picture") else None
+            "profile_picture": picture if hasattr(User, "profile_picture") else None,
         })
 
         refresh = RefreshToken.for_user(user)
 
         return Response({
             "success": True,
-            "message": "Login con Google exitoso",
+            "message": "Login con Firebase exitoso",
             "access": str(refresh.access_token),
             "refresh": str(refresh),
-            "created": created
+            "created": created,
         })
 
+    except (InvalidIdTokenError, auth.ExpiredIdTokenError):
+        return Response({
+            "success": False,
+            "message": "Token de Firebase inválido o expirado",
+        }, status=401)
+
     except Exception as e:
-        return Response({"success": False, "message": "Error en login con Google", "details": str(e)}, status=400)
+        return Response({
+            "success": False,
+            "message": "Error en login con Firebase",
+            "details": str(e)
+        }, status=400)

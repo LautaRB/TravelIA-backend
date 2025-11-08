@@ -8,5 +8,5 @@ urlpatterns = [
     path('register/', views.register),
     path('login/', views.login),
     path('logout/', views.logout),
-    path('google/', views.google_login),
+    path('firebase-login/', views.firebase_login),
 ]
