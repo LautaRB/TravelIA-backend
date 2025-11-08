@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'cloudinary',
     'cloudinary_storage',
+    'corsheaders',
     'user',
     'viaje',
     'medio',
@@ -126,7 +127,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://localhost:8081",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8081",
+    "https://travelia-frontend.web.app",
+    "https://travelia-frontend.firebaseapp.com",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'travelia.urls'
 
