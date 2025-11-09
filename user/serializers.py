@@ -5,7 +5,7 @@ from travelia.utils.messeges import MessagesES
 
 class UserSerializer(serializers.ModelSerializer):
     profile_picture = serializers.SerializerMethodField()
-    remove_profile_picture = serializers.BooleanField(write_only=True, required=False, default=False)
+    remove_profile_picture = serializers.BooleanField(required=False, default=False)
     
     class Meta:
         model = User
@@ -24,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
+        validated_data.pop('remove_profile_picture', None)
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
     
