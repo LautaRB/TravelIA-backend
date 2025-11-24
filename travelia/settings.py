@@ -138,6 +138,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8081",
     "http://localhost:4321",
     "http://127.0.0.1:4321",
+    "https://localhost",
     "https://travelia-frontend.web.app",
     "https://travelia-frontend.firebaseapp.com",
 ]
