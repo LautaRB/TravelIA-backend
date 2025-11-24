@@ -34,9 +34,9 @@ class ViajeViewSet(viewsets.ModelViewSet):
         eleccionRuta = input()
         ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][int(eleccionRuta)-1]['nombre'])
 
-        print("Elija una de las 3 opciones de medios:\n", plan['contenido']['medios_transporte'])
+        print("Elija una de las 3 opciones de medios:\n", plan['contenido']['medios'])
         eleccionMedio = input()
-        medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios_transporte'][int(eleccionMedio)-1]['nombre'])
+        medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios'][int(eleccionMedio)-1]['nombre'])
 
         final_serializer = self.get_serializer(data={
             **serializer.validated_data,
