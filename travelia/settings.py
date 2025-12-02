@@ -28,7 +28,7 @@ if firebase_credentials:
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 else:
-    print("⚠️  Advertencia: FIREBASE_CREDENTIALS no está configurada. Firebase no se inicializó.")
+    print("Advertencia: FIREBASE_CREDENTIALS no está configurada. Firebase no se inicializó.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,8 +53,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Google Auth
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+WEB_CLIENT_ID = os.getenv("WEB_CLIENT_ID")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,.onrender.com").split(",")
 
