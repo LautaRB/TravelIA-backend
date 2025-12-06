@@ -41,6 +41,8 @@ class User(AbstractUser):
         null=True
     )
 
+    google_profile_picture = models.URLField(max_length=500, blank=True, null=True)
+    
     objects = UserManager()
 
     def __str__(self):
@@ -50,4 +52,8 @@ class User(AbstractUser):
     def profile_picture_url(self):
         if self.profile_picture:
             return self.profile_picture.url
+        
+        if self.google_profile_picture:
+            return self.google_profile_picture
+            
         return cloudinary.CloudinaryImage("default_opw0zi").build_url()

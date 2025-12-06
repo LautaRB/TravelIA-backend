@@ -127,9 +127,14 @@ def firebase_login(request): # Google Login
 
         user, created = User.objects.get_or_create(email=email, defaults={
             "username": username,
-            "profile_picture": picture if hasattr(User, "profile_picture") else None, 
+            "google_profile_picture": picture, 
+            "profile_picture": None
         })
 
+        if not created and not user.profile_picture and not user.google_profile_picture and picture:
+             user.google_profile_picture = picture
+             user.save()
+        
         refresh = RefreshToken.for_user(user)
 
         return Response({
