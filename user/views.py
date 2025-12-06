@@ -18,14 +18,12 @@ class ProtectedView(APIView): # clase para la autenticación
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        serializer = UserSerializer(request.user)
+        
         return Response({
             'success': True,
-            'message': f'Hola {request.user.username}, estás autenticado',
-            'details': {
-                'username': request.user.username,
-                'email': request.user.email,
-                'role': request.user.role
-            }
+            'message': 'Datos del perfil recuperados',
+            'details': serializer.data
         })
     
     def patch(self, request):
