@@ -32,10 +32,13 @@ class UserSerializer(serializers.ModelSerializer):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
 
+        instance.currency = validated_data.get('currency', instance.currency)
+        instance.distance_unit = validated_data.get('distance_unit', instance.distance_unit)
+
         password = validated_data.get('password', None)
         if password:
             instance.set_password(password)
-
+            
         if validated_data.get("remove_profile_picture"):
             instance.profile_picture = "profile_pictures/default.png"
         elif "profile_picture" in validated_data:
