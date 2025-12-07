@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email', 'role', 'profile_picture', 'remove_profile_picture']
+        fields = ['id', 'username', 'password', 'email', 'role', 'profile_picture', 'remove_profile_picture', 'currency', 'distance_unit']
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True}
@@ -43,3 +43,15 @@ class UserSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+    
+    def validate_currency(self, value):
+        valid_currencies = dict(User.CURRENCY_CHOICES).keys()
+        if value not in valid_currencies:
+            raise serializers.ValidationError(MessagesES.ERROR_CURRENCY_TYPE)
+        return value
+
+    def validate_distance_unit(self, value):
+        valid_units = dict(User.UNIT_CHOICES).keys()
+        if value not in valid_units:
+            raise serializers.ValidationError(MessagesES.ERROR_DISTANCE_UNIT_TYPE)
+        return value

@@ -7,7 +7,7 @@ def crear_ruta(ruta):
         defaults={
             "origen":ruta['origen'],
             "destino":ruta['destino'],
-            "km": ruta['km'],
+            "distancia": ruta['distancia'],
             "tiempo": ruta['tiempo']
         }
     )

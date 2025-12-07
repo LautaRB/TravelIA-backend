@@ -31,10 +31,23 @@ class User(AbstractUser):
         ("SUPERUSER", "SUPERUSER"),
         ("USER", "USER"),
     ]
+    
+    CURRENCY_CHOICES = [
+        ('USD', 'Dólares (USD)'),
+        ('ARS', 'Pesos Arg (ARS)'),
+        ('EUR', 'Euros (EUR)'),
+    ]
+    UNIT_CHOICES = [
+        ('KM', 'Kilómetros'),
+        ('MI', 'Millas'),
+    ]
 
     email = models.EmailField(unique=True)
     role = models.CharField(choices=ROLE_CHOICES, default="USER", max_length=10)
 
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='ARS')
+    distance_unit = models.CharField(max_length=2, choices=UNIT_CHOICES, default='KM')
+    
     profile_picture = CloudinaryField(
         "profile_picture",
         blank=True,

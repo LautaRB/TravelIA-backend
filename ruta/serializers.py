@@ -5,7 +5,7 @@ from travelia.utils.messeges import MessagesES
 class RutaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ruta
-        fields = ['id', 'nombre_Ruta', 'origen', 'destino', 'km', 'tiempo']
+        fields = ['id', 'nombre_Ruta', 'origen', 'destino', 'distancia', 'tiempo']
 
     def validate_nombre_Ruta(self, value):
         if value.isdigit():
@@ -22,7 +22,7 @@ class RutaSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
         return value
     
-    def validate_km(self, value):
+    def validate_distancia(self, value):
         if isinstance(value, str) or value < 0:
             raise serializers.ValidationError(MessagesES.ERROR_KM_TIME_TYPE)
         return value

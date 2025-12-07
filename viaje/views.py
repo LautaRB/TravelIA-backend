@@ -28,7 +28,7 @@ class ViajeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        plan = generar_plan_viaje(serializer.validated_data)
+        plan = generar_plan_viaje(serializer.validated_data, request.user)
 
         print("Elija una de las 3 opciones de rutas:\n", plan['contenido']['rutas'])
         eleccionRuta = input()
@@ -51,11 +51,6 @@ class ViajeViewSet(viewsets.ModelViewSet):
             'message': MessagesES.SUCCESS_CREATE_TRIP,
             'details': final_serializer.data,
         }, status=status.HTTP_201_CREATED)
-        return Response({
-            'success': False,
-            'message': MessagesES.ERROR_CREATE_TRIP,
-            'details': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
     
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)

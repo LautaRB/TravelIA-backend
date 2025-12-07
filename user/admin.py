@@ -6,14 +6,16 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     fieldsets = BaseUserAdmin.fieldsets + (
-        ("Rol personalizado", {"fields": ("role", "profile_picture", "profile_picture_preview")}),
+        ("Preferencias y Rol", {"fields": ("role", "currency", "distance_unit", "profile_picture", "profile_picture_preview")}),
     )
+
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
-        ("Rol personalizado", {"fields": ("role", "profile_picture")}),
+        ("Preferencias y Rol", {"fields": ("role", "currency", "distance_unit", "profile_picture")}),
     )
 
     readonly_fields = ("profile_picture_preview",)
-    list_display = ("username", "email", "role", "profile_picture_preview")
+
+    list_display = ("username", "email", "role", "currency", "distance_unit", "profile_picture_preview")
 
     def profile_picture_preview(self, obj):
         if obj.profile_picture_url:
@@ -22,4 +24,4 @@ class UserAdmin(BaseUserAdmin):
                 f'style="object-fit:cover;border-radius:50%;" />'
             )
         return "-"
-    profile_picture_preview.short_description = "Profile Picture"
+    profile_picture_preview.short_description = "Foto"

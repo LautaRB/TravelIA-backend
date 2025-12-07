@@ -27,6 +27,8 @@ def handle_validation_error(exc, response):
         'tiempo': handle_time_errors,
         'nombre_Medio': handle_media_name_errors,
         'tipo': handle_media_type_errors,
+        'currency': handle_currency_errors,
+        'distance_unit': handle_distance_unit_errors,
     }
     
     for field, handler in field_handlers.items():
@@ -228,6 +230,28 @@ def handle_media_type_errors(errors):
             "message": MessagesES.ERROR_MEDIA_TYPE,
             "status": status.HTTP_400_BAD_REQUEST
         }
+
+def handle_currency_errors(errors):
+    if errors[0].code == 'invalid_choice' or str(errors[0]) == MessagesES.ERROR_CURRENCY_TYPE:
+        return {
+            "message": MessagesES.ERROR_CURRENCY_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    return {
+        "message": MessagesES.GENERIC_VALIDATION_ERROR,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
+
+def handle_distance_unit_errors(errors):
+    if errors[0].code == 'invalid_choice' or str(errors[0]) == MessagesES.ERROR_DISTANCE_UNIT_TYPE:
+        return {
+            "message": MessagesES.ERROR_DISTANCE_UNIT_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    return {
+        "message": MessagesES.GENERIC_VALIDATION_ERROR,
+        "status": status.HTTP_400_BAD_REQUEST
+    }
 
 # Mapa de excepciones
 EXCEPTION_HANDLERS = {

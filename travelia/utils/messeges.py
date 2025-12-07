@@ -17,6 +17,10 @@ class MessagesES:
     #Error en la modificación del perfil del usuario
     ERROR_MODIFY_PROFILE = "No se pudo modificar el perfil del usuario."
     
+    # Error en preferencias de usuario
+    ERROR_CURRENCY_TYPE = "La moneda seleccionada no es válida."
+    ERROR_DISTANCE_UNIT_TYPE = "La unidad de distancia seleccionada no es válida."
+    
     #Error en la sesión
     ERROR_REGISTER = "No se pudo registrar el usuario."
     ERROR_LOGIN = "No se pudo iniciar sesión."
@@ -140,6 +144,10 @@ class MessagesEN:
     
     #Error in the modification of the user profile
     ERROR_MODIFY_PROFILE = "Could not modify user profile."
+    
+    # Error in user preferences
+    ERROR_CURRENCY_TYPE = "The selected currency is not valid."
+    ERROR_DISTANCE_UNIT_TYPE = "The selected distance unit is not valid."
     
     #Error in the session
     ERROR_REGISTER = "User registration failed."
