@@ -69,4 +69,4 @@ class User(AbstractUser):
         if self.google_profile_picture:
             return self.google_profile_picture
             
-        return cloudinary.CloudinaryImage("default_opw0zi").build_url()
+        return None
