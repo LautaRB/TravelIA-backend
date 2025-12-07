@@ -64,7 +64,10 @@ class User(AbstractUser):
     @property
     def profile_picture_url(self):
         if self.profile_picture:
-            return self.profile_picture.url
+            try:
+                return cloudinary.CloudinaryImage(str(self.profile_picture)).build_url(secure=True)
+            except Exception:
+                return None
         
         if self.google_profile_picture:
             return self.google_profile_picture
