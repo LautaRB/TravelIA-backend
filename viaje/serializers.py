@@ -5,6 +5,16 @@ from ruta.models import Ruta
 from medio.models import Medio
 from travelia.utils.messeges import MessagesES
 
+class PlanificarViajeSerializer(serializers.Serializer):
+    origen = serializers.CharField(required=True)
+    destino = serializers.CharField(required=True)
+    fecha_inicio = serializers.DateField(required=True)
+    fecha_fin = serializers.DateField(required=True)
+
+    def validate(self, data):
+        if data['fecha_inicio'] > data['fecha_fin']:
+            raise serializers.ValidationError({"fechas": MessagesES.ERROR_DATES})
+        return data
 
 class ViajeSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())

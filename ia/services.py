@@ -56,33 +56,10 @@ def generar_plan_viaje(datos, user):
     if texto.endswith("```"):
         texto = texto[:-3].strip()
 
-    contenido = json.loads(texto)
-    
-    print(contenido)
-    
-    rutas = [None] * len(contenido['rutas'])
-    for i in range(len(contenido['rutas'])):
-        rutas[i] = {
-            "nombre_Ruta": contenido['rutas'][i]['nombre'],
-            "origen": datos['origen'],
-            "destino": datos['destino'],
-            "distancia": contenido['rutas'][i]['distancia'],
-            "tiempo": contenido['rutas'][i]['duracion_horas']
-        }
-    
-    for ruta in rutas:
-        crear_ruta(ruta)
-    
-    medios = [None] * len(contenido['medios'])
-    for i in range(len(contenido['medios'])):
-        medios[i] = {
-            "tipo": contenido['medios'][i]['tipo'],
-            "nombre_Medio": contenido['medios'][i]['nombre'],
-            "precio": contenido['medios'][i]['precio']
-        }
-    
-    for medio in medios:
-        crear_medio(medio)
+    try:
+        contenido = json.loads(texto)
+    except json.JSONDecodeError:
+        return {"contenido": {"rutas": [], "medios": []}}
     
     return {
         "contenido": contenido,

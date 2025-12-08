@@ -1,11 +1,13 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from travelia.utils.messeges import MessagesES
 from .models import Viaje
 from ruta.models import Ruta
 from medio.models import Medio
 from .serializers import ViajeSerializer
+from .serializers import PlanificarViajeSerializer
 from ia.services import generar_plan_viaje
 
 # Create your views here.
@@ -90,3 +92,25 @@ class ViajeViewSet(viewsets.ModelViewSet):
                 'message': MessagesES.ERROR_DELETE_TRIP,
                 'details': str(e)
             }, status=400)
+
+class PlanificarViajeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = PlanificarViajeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            plan = generar_plan_viaje(serializer.validated_data, request.user)
+            return Response({
+                'success': True,
+                'message': 'Opciones generadas con éxito',
+                'opciones': plan['contenido']
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': 'Error al generar el plan con la IA',
+                'details': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
