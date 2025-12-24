@@ -1,97 +1,12 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.views import APIView
-from travelia.utils.messeges import MessagesES
+from rest_framework import permissions
 from .models import Viaje
-from ruta.models import Ruta
-from medio.models import Medio
-from .serializers import ViajeSerializer
-from .serializers import PlanificarViajeSerializer
+from .serializers import ViajeSerializer, PlanificarViajeSerializer
 from ia.services import generar_plan_viaje
-
-# Create your views here.
-class ViajeViewSet(viewsets.ModelViewSet):
-    serializer_class = ViajeSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        # Viajes del usuario autenticado
-        user = self.request.user
-        if user.is_superuser:
-            return Viaje.objects.all()
-        return Viaje.objects.filter(user=user)
-
-    def perform_create(self, serializer):
-        # Asocia automáticamente el nuevo viaje al user logueado
-        serializer.save(user=self.request.user)
-    
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        plan = generar_plan_viaje(serializer.validated_data, request.user)
-
-        print("Elija una de las 3 opciones de rutas:\n", plan['contenido']['rutas'])
-        eleccionRuta = input()
-        ruta = Ruta.objects.get(nombre_Ruta=plan['contenido']['rutas'][int(eleccionRuta)-1]['nombre'])
-
-        print("Elija una de las 3 opciones de medios:\n", plan['contenido']['medios'])
-        eleccionMedio = input()
-        medio = Medio.objects.get(nombre_Medio=plan['contenido']['medios'][int(eleccionMedio)-1]['nombre'])
-
-        final_serializer = self.get_serializer(data={
-            **serializer.validated_data,
-            'ruta': ruta.id,
-            'medio': medio.id
-        })
-        final_serializer.is_valid(raise_exception=True)
-        self.perform_create(final_serializer)
-
-        return Response({
-            'success': True,
-            'message': MessagesES.SUCCESS_CREATE_TRIP,
-            'details': final_serializer.data,
-        }, status=status.HTTP_201_CREATED)
-    
-    def perform_update(self, serializer):
-        serializer.save(user=self.request.user)
-    
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        
-        if serializer.is_valid():
-            self.perform_update(serializer)
-            return Response({
-                'success': True,
-                'message': MessagesES.SUCCESS_UPDATE_TRIP,
-                'details': serializer.data
-            }, status=status.HTTP_200_OK)
-        
-        return Response({
-            'success': False,
-            'message': MessagesES.ERROR_UPDATE_TRIP,
-            'details': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
-            
-    def perform_destroy(self, instance):
-        instance.delete()
-    
-    def destroy(self, request, *args, **kwargs): # Para retornar una respuesta
-        try:
-            instance = self.get_object()
-            self.perform_destroy(instance)
-            return Response({
-                'success': True,
-                'message': MessagesES.SUCCESS_DELETE_TRIP
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'success': False,
-                'message': MessagesES.ERROR_DELETE_TRIP,
-                'details': str(e)
-            }, status=400)
+from ruta.services import crear_ruta
+from medio.services import crear_medio
 
 class PlanificarViajeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -99,7 +14,6 @@ class PlanificarViajeView(APIView):
     def post(self, request):
         serializer = PlanificarViajeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         try:
             plan = generar_plan_viaje(serializer.validated_data, request.user)
             return Response({
@@ -107,10 +21,71 @@ class PlanificarViajeView(APIView):
                 'message': 'Opciones generadas con éxito',
                 'opciones': plan['contenido']
             }, status=status.HTTP_200_OK)
-
         except Exception as e:
             return Response({
                 'success': False,
-                'message': 'Error al generar el plan con la IA',
+                'message': 'Error al generar el plan',
                 'details': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ViajeViewSet(viewsets.ModelViewSet):
+    serializer_class = ViajeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Viaje.objects.filter(user=self.request.user).order_by('-id')
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        
+        try:
+            ruta_data = data.pop('ruta_data', None)
+            if ruta_data:
+                datos_para_servicio = {
+                    "nombre_Ruta": ruta_data.get('nombre'),
+                    "origen": data.get('origen'),
+                    "destino": data.get('destino'),
+                    "distancia": ruta_data.get('distancia'),
+                    "tiempo": ruta_data.get('duracion_horas')
+                }
+                
+                nueva_ruta, _ = crear_ruta(datos_para_servicio) 
+                
+                data['ruta'] = nueva_ruta.id
+
+            medio_data = data.pop('medio_data', None)
+            if medio_data:
+                datos_para_servicio_medio = {
+                    "nombre_Medio": medio_data.get('nombre'),
+                    "tipo": medio_data.get('tipo')
+                }
+                
+
+                nuevo_medio, _ = crear_medio(datos_para_servicio_medio)
+                
+                data['medio'] = nuevo_medio.id
+                
+                if 'precio' in medio_data:
+                    data['precio'] = medio_data['precio']
+
+            data['user'] = request.user.id 
+            
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            
+            headers = self.get_success_headers(serializer.data)
+            return Response({
+                "success": True,
+                "message": "Viaje guardado con éxito",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED, headers=headers)
+
+        except Exception as e:
+            print(f"ERROR EN CREATE VIAJE: {str(e)}")
+            return Response({
+                "success": False,
+                "message": "Error al guardar el viaje",
+                "details": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)

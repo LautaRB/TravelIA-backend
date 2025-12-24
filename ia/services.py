@@ -62,7 +62,6 @@ def generar_plan_viaje(datos, user):
             texto = texto.replace("```", "").strip()
 
         contenido = json.loads(texto)
-        print(f"Respuesta generada: {contenido}")
         if "opciones" not in contenido:
             contenido = {"opciones": []}
 
