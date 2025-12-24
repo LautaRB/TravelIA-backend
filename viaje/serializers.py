@@ -4,6 +4,7 @@ from .models import Viaje
 from ruta.models import Ruta
 from medio.models import Medio
 from travelia.utils.messeges import MessagesES
+from rest_framework.exceptions import ValidationError
 
 class PlanificarViajeSerializer(serializers.Serializer):
     origen = serializers.CharField(required=True)
@@ -13,7 +14,7 @@ class PlanificarViajeSerializer(serializers.Serializer):
 
     def validate(self, data):
         if data['fecha_inicio'] > data['fecha_fin']:
-            raise serializers.ValidationError({"fechas": MessagesES.ERROR_DATES})
+            raise ValidationError({"fechas": MessagesES.ERROR_DATES})
         return data
 
 class ViajeSerializer(serializers.ModelSerializer):
@@ -23,7 +24,7 @@ class ViajeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin', 'ruta', 'medio']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin', 'ruta', 'medio', 'precio']
         read_only_fields = ['user']
 
     def to_representation(self, instance):
@@ -33,30 +34,32 @@ class ViajeSerializer(serializers.ModelSerializer):
     
     def validate_fecha_inicio(self, date):
         if date < datetime.date.today():
-            raise serializers.ValidationError(MessagesES.ERROR_DATE_START_PAST)
+            raise ValidationError(MessagesES.ERROR_DATE_START_PAST)
         return date
 
     def validate_fecha_fin(self, date):
         if date < datetime.date.today():
-            raise serializers.ValidationError(MessagesES.ERROR_DATE_END_PAST)
+            raise ValidationError(MessagesES.ERROR_DATE_END_PAST)
         return date
 
     def validate(self, data):
-        if data['fecha_inicio'] > data['fecha_fin']:
-            raise serializers.ValidationError({"fechas": MessagesES.ERROR_DATES})
+        inicio = data.get('fecha_inicio')
+        fin = data.get('fecha_fin')
+        if inicio and fin and inicio > fin:
+             raise ValidationError({"fechas": MessagesES.ERROR_DATES})
         return data
 
     def validate_titulo(self, value):
         if value.isdigit():
-            raise serializers.ValidationError(MessagesES.ERROR_TITLE_TYPE)
+            raise ValidationError(MessagesES.ERROR_TITLE_TYPE)
         return value
     
     def validate_origen(self, value):
         if value.isdigit():
-            raise serializers.ValidationError(MessagesES.ERROR_ORIGIN_TYPE)
+            raise ValidationError(MessagesES.ERROR_ORIGIN_TYPE)
         return value
     
     def validate_destino(self, value):
         if value.isdigit():
-            raise serializers.ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
+            raise ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
         return value

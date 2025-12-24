@@ -23,11 +23,11 @@ class RutaSerializer(serializers.ModelSerializer):
         return value
     
     def validate_distancia(self, value):
-        if isinstance(value, str) or value < 0:
+        if value < 0:
             raise serializers.ValidationError(MessagesES.ERROR_KM_TIME_TYPE)
         return value
     
     def validate_tiempo(self, value):
-        if isinstance(value, str) or value < 0:
+        if value < 0:
             raise serializers.ValidationError(MessagesES.ERROR_KM_TIME_TYPE)
         return value

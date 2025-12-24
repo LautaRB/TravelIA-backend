@@ -6,18 +6,18 @@ class MedioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medio
         fields = ['id', 'nombre_Medio', 'tipo', 'precio']
-    
+
     def validate_nombre_Medio(self, value):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_MEDIA_NAME_TYPE)
         return value
-    
+
     def validate_tipo(self, value):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_MEDIA_TYPE)
         return value
-    
+
     def validate_precio(self, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise serializers.ValidationError(MessagesES.ERROR_MEDIA_PRICE)
         return value
