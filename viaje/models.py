@@ -15,6 +15,7 @@ class Viaje(models.Model):
     fecha_fin = models.DateField()
     ruta = models.ForeignKey(Ruta, on_delete=models.SET_NULL, null=True, blank=True, related_name="viajes")
     medio = models.ForeignKey(Medio, on_delete=models.SET_NULL, null=True, blank=True, related_name="viajes")
-
+    precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
     def __str__(self):
         return f"{self.titulo} ({self.user.username})"
