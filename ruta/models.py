@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Ruta(models.Model):
-    nombre_Ruta = models.CharField(max_length=50)
-    origen = models.CharField(max_length=100)
-    destino = models.CharField(max_length=100)
+    nombre_Ruta = models.CharField(max_length=255)
+    origen = models.CharField(max_length=255)
+    destino = models.CharField(max_length=255)
     distancia = models.IntegerField(default=0) 
     tiempo = models.IntegerField(default=0)
 
