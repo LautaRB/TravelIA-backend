@@ -11,7 +11,7 @@ class Medio(models.Model):
         ("SIN DEFINIR", "Sin definir"),
     ]
 
-    nombre_Medio = models.CharField(max_length=50)
+    nombre_Medio = models.CharField(max_length=255)
     tipo = models.CharField(choices=TYPE_CHOICES, default="SIN DEFINIR", max_length=20)
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
