@@ -46,11 +46,16 @@ def validar_username_manual(username):
     if username.isdigit():
         raise ValidationError({"username": [MessagesES.ERROR_USERNAME_TYPE]})
     
+def validar_username_duplicate(username):
+    if not username:
+        return
+    
     if username in User.objects.values_list('username', flat=True):
         raise ValidationError({"username": [MessagesES.ERROR_USER_ALREADY_EXISTS]})
 
 @api_view(['POST'])
 def register(request):
+    validar_username_duplicate(request.data.get('username'))
     validar_username_manual(request.data.get('username'))
 
     serializer = UserSerializer(data=request.data)
