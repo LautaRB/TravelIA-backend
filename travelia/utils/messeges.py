@@ -8,6 +8,7 @@ class MessagesES:
     #Error en los campos del usuario
     ERROR_USERNAME_REQUIRED = "El nombre de usuario es requerido."
     ERROR_USERNAME_TYPE = "El nombre de usuario no puede ser solo números."
+    ERROR_USERNAME_SPACES = "El nombre de usuario no puede contener espacios."
     ERROR_PASSWORD_REQUIRED = "La contraseña es requerida."
     ERROR_EMAIL_REQUIRED = "El email es requerido."
     ERROR_REFRESH_REQUIRED = "El refresh token es requerido."
@@ -136,6 +137,7 @@ class MessagesEN:
     #Error in the user fields
     ERROR_USERNAME_REQUIRED = "Username is required."
     ERROR_USERNAME_TYPE = "Username cannot be only numbers."
+    ERROR_USERNAME_SPACES = "Username cannot contain spaces."
     ERROR_PASSWORD_REQUIRED = "Password is required."
     ERROR_EMAIL_REQUIRED = "Email is required."
     ERROR_REFRESH_REQUIRED = "Refresh token is required."

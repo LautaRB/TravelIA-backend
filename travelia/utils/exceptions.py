@@ -43,7 +43,7 @@ def handle_validation_error(exc, response):
 def handle_username_errors(errors):
 
     first_error = str(errors[0])
-
+    
     if first_error == MessagesES.ERROR_USER_ALREADY_EXISTS:
         return {
             "message": MessagesES.ERROR_USER_ALREADY_EXISTS,
@@ -52,6 +52,11 @@ def handle_username_errors(errors):
     elif first_error == MessagesES.ERROR_USERNAME_TYPE:
         return {
             "message": MessagesES.ERROR_USERNAME_TYPE,
+            "status": status.HTTP_400_BAD_REQUEST
+        }
+    elif first_error == MessagesES.ERROR_USERNAME_SPACES:
+        return {
+            "message": MessagesES.ERROR_USERNAME_SPACES,
             "status": status.HTTP_400_BAD_REQUEST
         }
 

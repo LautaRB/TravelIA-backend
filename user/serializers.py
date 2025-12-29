@@ -24,8 +24,15 @@ class UserSerializer(serializers.ModelSerializer):
         return rep
 
     def validate_username(self, value):
+        if " " in value:
+            raise serializers.ValidationError(MessagesES.ERROR_USERNAME_SPACES)
+
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_USERNAME_TYPE)
+        
+        if value.exists():
+            raise serializers.ValidationError(MessagesES.ERROR_USER_ALREADY_EXISTS)
+            
         return value
 
     def validate_currency(self, value):

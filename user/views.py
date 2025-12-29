@@ -36,23 +36,44 @@ class ProtectedView(APIView):
             'details': serializer.data
         })
 
+def validar_username_manual(username):
+    if not username:
+        return
+        
+    if " " in username:
+        raise ValidationError({"username": [MessagesES.ERROR_USERNAME_SPACES]})
+        
+    if username.isdigit():
+        raise ValidationError({"username": [MessagesES.ERROR_USERNAME_TYPE]})
+    
+    if username in User.objects.values_list('username', flat=True):
+        raise ValidationError({"username": [MessagesES.ERROR_USER_ALREADY_EXISTS]})
+
 @api_view(['POST'])
 def register(request):
+    validar_username_manual(request.data.get('username'))
+
     serializer = UserSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
     
-    return Response({
-        "success": True, 
-        "message": MessagesES.SUCCESS_REGISTER
-    }, status=status.HTTP_201_CREATED)
+    return Response({"success": True, "message": MessagesES.SUCCESS_REGISTER})
 
 @api_view(['POST'])
 def login(request):
-    serializer = TokenObtainPairSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    validar_username_manual(username)
+
+    serializer = TokenObtainPairSerializer(data={
+        'username': username,
+        'password': password
+    })
     
+    serializer.is_valid(raise_exception=True)
     tokens = serializer.validated_data
+    
     return Response({
         'success': True,
         'message': MessagesES.SUCCESS_LOGIN,
