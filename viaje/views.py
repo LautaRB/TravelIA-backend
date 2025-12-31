@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from django.db import transaction
 from .models import Viaje
-from .serializers import ViajeSerializer, PlanificarViajeSerializer
+from .serializers import ViajeSerializer, ViajeDetailSerializer, PlanificarViajeSerializer
 from ia.services import generar_plan_viaje
 from ruta.services import crear_ruta
 from medio.services import crear_medio
@@ -26,12 +26,33 @@ class PlanificarViajeView(APIView):
 
 
 class ViajeViewSet(viewsets.ModelViewSet):
-    serializer_class = ViajeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Viaje.objects.filter(user=self.request.user).order_by('-id')
 
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return ViajeDetailSerializer
+        return ViajeSerializer
+    
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        
+        nuevos_datos = serializer.validated_data
+        nuevo_origen = nuevos_datos.get('origen', instance.origen)
+        nuevo_destino = nuevos_datos.get('destino', instance.destino)
+
+        lugares_cambiaron = (
+            nuevo_origen != instance.origen or 
+            nuevo_destino != instance.destino
+        )
+
+        if lugares_cambiaron:
+            serializer.save(ruta=None, medio=None, precio=None)
+        else:
+            serializer.save()
+    
     def create(self, request, *args, **kwargs):
         with transaction.atomic():
             data = request.data.copy()

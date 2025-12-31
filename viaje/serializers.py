@@ -6,6 +6,16 @@ from medio.models import Medio
 from travelia.utils.messeges import MessagesES
 from rest_framework.exceptions import ValidationError
 
+class RutaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ruta
+        fields = ['nombre_Ruta', 'distancia', 'tiempo']
+
+class MedioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medio
+        fields = ['nombre_Medio', 'tipo']
+
 class PlanificarViajeSerializer(serializers.Serializer):
     origen = serializers.CharField(required=True)
     destino = serializers.CharField(required=True)
@@ -63,3 +73,13 @@ class ViajeSerializer(serializers.ModelSerializer):
         if value.isdigit():
             raise ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
         return value
+
+class ViajeDetailSerializer(serializers.ModelSerializer):
+    ruta = RutaSerializer(read_only=True)
+    medio = MedioSerializer(read_only=True)
+    
+    user = serializers.StringRelatedField() 
+
+    class Meta:
+        model = Viaje
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'fecha_inicio', 'fecha_fin', 'ruta', 'medio', 'precio']
