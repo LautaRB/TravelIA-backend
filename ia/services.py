@@ -15,7 +15,13 @@ def generar_plan_viaje(datos, user):
     nombre_unidad = "Kilómetros" if unidad_pref == 'KM' else "Millas"
     
     prompt = f"""
-    Actúa como un agente de viajes experto. Planifica un viaje desde '{datos['origen']}' hasta '{datos['destino']}' 
+    Actúa como un agente de viajes experto. 
+    
+    VALIDACIÓN PREVIA:
+    Si '{datos['origen']}' o '{datos['destino']}' NO son lugares geográficos reales o coherentes, 
+    devuelve un JSON con una lista "opciones" vacía: {{ "opciones": [] }}.
+    
+    Planifica un viaje desde '{datos['origen']}' hasta '{datos['destino']}' 
     para las fechas: {datos['fecha_inicio']} a {datos['fecha_fin']}.
 
     Genera EXACTAMENTE 3 opciones de viaje distintas y lógicas.
