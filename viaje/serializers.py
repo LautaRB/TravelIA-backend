@@ -22,6 +22,16 @@ class PlanificarViajeSerializer(serializers.Serializer):
     fecha_inicio = serializers.DateField(required=True)
     fecha_fin = serializers.DateField(required=True)
 
+    def validate_origen(self, value):
+        if value.strip().isdigit(): 
+            raise ValidationError(MessagesES.ERROR_ORIGIN_TYPE)
+        return value
+
+    def validate_destino(self, value):
+        if value.strip().isdigit():
+            raise ValidationError(MessagesES.ERROR_DESTINATION_TYPE)
+        return value
+    
     def validate(self, data):
         if data['fecha_inicio'] > data['fecha_fin']:
             raise ValidationError({"fechas": MessagesES.ERROR_DATES})
