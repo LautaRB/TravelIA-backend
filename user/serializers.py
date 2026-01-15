@@ -30,7 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
         if value.isdigit():
             raise serializers.ValidationError(MessagesES.ERROR_USERNAME_TYPE)
         
-        if User.objects.filter(username=value).exists(): 
+        user_query = User.objects.filter(username=value)
+        
+        if self.instance:
+            user_query = user_query.exclude(pk=self.instance.pk)
+        
+        if user_query.exists():
             raise serializers.ValidationError(MessagesES.ERROR_USER_ALREADY_EXISTS)
             
         return value
