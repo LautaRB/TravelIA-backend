@@ -2,10 +2,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from ruta.views import RutaViewSet
 from medio.views import MedioViewSet
 from viaje.views import ViajeViewSet, PlanificarViajeView
+
+def ruta_inicio(request):
+    return JsonResponse({
+        "status": "online",
+        "mensaje": "El servidor está funcionando perfectamente"
+    })
 
 router = DefaultRouter()
 router.register(r'viajes', ViajeViewSet, basename='viaje')
@@ -13,6 +20,7 @@ router.register(r'medios', MedioViewSet, basename='medio')
 router.register(r'rutas', RutaViewSet, basename='ruta')
 
 urlpatterns = [
+    path('', ruta_inicio),
     path('api/viajes/planificar/', PlanificarViajeView.as_view(), name='planificar-viaje'),
     path('api/', include(router.urls)), #Rutas de los viajes, medios y rutas
     path('api/admin/', admin.site.urls), # Rutas del Administrador (superuser)
