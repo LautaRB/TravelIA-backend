@@ -11,7 +11,7 @@ from viaje.views import ViajeViewSet, PlanificarViajeView
 def ruta_inicio(request):
     return JsonResponse({
         "status": "online",
-        "mensaje": "El servidor está funcionando perfectamente"
+        "mensaje": "El servidor esta funcionando perfectamente"
     })
 
 router = DefaultRouter()

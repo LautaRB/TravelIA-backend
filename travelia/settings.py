@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'viaje',
     'medio',
     'ruta',
+    'alojamiento',
 ]
 
 AUTH_USER_MODEL = 'user.User'
