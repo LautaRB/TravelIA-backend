@@ -2,7 +2,6 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import ValidationError
 from rest_framework import permissions
 from django.db import transaction
 from .models import Viaje
@@ -11,7 +10,6 @@ from ia.services import generar_plan_viaje
 from ruta.services import crear_ruta
 from medio.services import crear_medio
 from alojamiento.services import crear_alojamiento
-from travelia.utils.messeges import MessagesES
 
 logger = logging.getLogger(__name__)
 
@@ -111,86 +109,56 @@ class ViajeViewSet(viewsets.ModelViewSet):
                 "data": serializer.data
             }, status=status.HTTP_201_CREATED, headers=headers)
             
-    def perform_update(self, serializer):
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        nuevos_datos = serializer.validated_data
         
-        nuevo_origen = nuevos_datos.get('origen', instance.origen)
-        nuevo_destino = nuevos_datos.get('destino', instance.destino)
-        
-        nuevo_rango_fechas = nuevos_datos.get('rango_fechas', instance.rango_fechas)
-        nueva_cantidad_personas = nuevos_datos.get('cantidad_personas', instance.cantidad_personas)
-
-        lugares_cambiaron = (nuevo_origen != instance.origen) or (nuevo_destino != instance.destino)
-        detalles_cambiaron = (nuevo_rango_fechas != instance.rango_fechas) or (nueva_cantidad_personas != instance.cantidad_personas)
-
-        if lugares_cambiaron or detalles_cambiaron:
-            serializer.save(ruta=None, medio=None, alojamiento=None, precio=None)
+        with transaction.atomic():
+            data = request.data.copy()
             
-            medio_actual = instance.medio.tipo if instance.medio else "SIN DEFINIR"
-            medio_transporte = self.request.data.get('medio_transporte', medio_actual)
-            
-            datos_para_ia = {
-                "origen": nuevo_origen,
-                "destino": nuevo_destino,
-                "rango_fechas": nuevo_rango_fechas,
-                "cantidad_personas": nueva_cantidad_personas,
-                "medio_transporte": medio_transporte
-            }
+            ruta_data = data.pop('ruta_data', None)
+            medio_data = data.pop('medio_data', None)
+            alojamiento_data = data.pop('alojamiento_data', None)
 
-            try:
-                plan_actualizado = generar_plan_viaje(datos_para_ia, self.request.user)
-                opciones = plan_actualizado.get('contenido', {}).get('opciones', [])
-
-                if not opciones:
-                    raise ValueError("La IA no generó opciones válidas.")
-
-                mejor_opcion = opciones[0]
-                ruta_json = mejor_opcion['ruta']
-                medio_json = mejor_opcion['medio']
-                
-                alojamiento_json = mejor_opcion.get('alojamiento')
-
+            if ruta_data:
                 datos_ruta = {
-                    "nombre_Ruta": ruta_json.get('nombre'),
-                    "origen": nuevo_origen,
-                    "destino": nuevo_destino,
-                    "distancia": ruta_json.get('distancia'),
-                    "tiempo": ruta_json.get('duracion_horas')
+                    "nombre_Ruta": ruta_data.get('nombre'),
+                    "origen": data.get('origen', instance.origen),
+                    "destino": data.get('destino', instance.destino),
+                    "distancia": ruta_data.get('distancia'),
+                    "tiempo": ruta_data.get('duracion_horas')
                 }
-                nueva_ruta_obj, _ = crear_ruta(datos_ruta)
+                nueva_ruta, _ = crear_ruta(datos_ruta)
+                data['ruta'] = nueva_ruta.id
 
+            if medio_data:
                 datos_medio = {
-                    "nombre_Medio": medio_json.get('nombre'),
-                    "tipo": medio_json.get('tipo'),
-                    "plataforma_recomendada": medio_json.get('plataforma_recomendada')
+                    "nombre_Medio": medio_data.get('nombre'),
+                    "tipo": medio_data.get('tipo'),
+                    "plataforma_recomendada": medio_data.get('plataforma_recomendada')
                 }
-                nuevo_medio_obj, _ = crear_medio(datos_medio)
+                nuevo_medio, _ = crear_medio(datos_medio)
+                data['medio'] = nuevo_medio.id
                 
-                nuevo_alojamiento_obj = None
-                if alojamiento_json:
-                    datos_alojamiento = {
-                        "tipo_sugerido": alojamiento_json.get('tipo_sugerido'),
-                        "plataforma_recomendada": alojamiento_json.get('plataforma_recomendada')
-                    }
-                    nuevo_alojamiento_obj, _ = crear_alojamiento(datos_alojamiento)
+                if 'precio_total' in medio_data:
+                    data['precio'] = medio_data['precio_total']
+                elif 'precio' in medio_data:
+                    data['precio'] = medio_data['precio']
 
-                instance.refresh_from_db()
-                instance.ruta = nueva_ruta_obj
-                instance.medio = nuevo_medio_obj
-                
-                if nuevo_alojamiento_obj:
-                    instance.alojamiento = nuevo_alojamiento_obj
-                
-                precio_sugerido = medio_json.get('precio_total')
-                if precio_sugerido:
-                    instance.precio = precio_sugerido
-                
-                instance.save()
+            if alojamiento_data:
+                datos_alojamiento = {
+                    "tipo_sugerido": alojamiento_data.get('tipo_sugerido'),
+                    "plataforma_recomendada": alojamiento_data.get('plataforma_recomendada')
+                }
+                nuevo_alojamiento, _ = crear_alojamiento(datos_alojamiento)
+                data['alojamiento'] = nuevo_alojamiento.id
 
-            except Exception as e:
-                logger.error(f"Error crítico recalculando viaje ID {instance.id}: {str(e)}", exc_info=True)
-                raise ValidationError(MessagesES.ERROR_UPDATE_TRIP)
+            serializer = self.get_serializer(instance, data=data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
 
-        else:
-            serializer.save()
+            return Response({
+                "success": True,
+                "message": "Viaje actualizado con éxito",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
