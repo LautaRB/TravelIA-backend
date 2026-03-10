@@ -29,17 +29,20 @@ class PlanificarViajeView(APIView):
         try:
             plan = generar_plan_viaje(serializer.validated_data, request.user)
             
-            opciones = plan.get('contenido', {}).get('opciones', []) if isinstance(plan.get('contenido'), dict) else plan.get('contenido', [])
+            contenido_ia = plan.get('contenido', {})
+            
+            opciones = contenido_ia.get('opciones', []) if isinstance(contenido_ia, dict) else contenido_ia
+            itinerario = contenido_ia.get('itinerario', []) if isinstance(contenido_ia, dict) else []
             
             return Response({
                 'success': True,
                 'message': 'Opciones generadas con éxito',
-                'opciones': opciones
+                'opciones': opciones,
+                'itinerario': itinerario
             }, status=status.HTTP_200_OK)
             
         except Exception as e:
             logger.error(f"Error en PlanificarViajeView al llamar a la IA: {str(e)}", exc_info=True)
-            
             return Response({
                 'success': False,
                 'message': 'Hubo un problema al generar el viaje con la IA. Por favor, intentá de nuevo.'
@@ -96,6 +99,11 @@ class ViajeViewSet(viewsets.ModelViewSet):
                 nuevo_alojamiento, _ = crear_alojamiento(datos_alojamiento)
                 data['alojamiento'] = nuevo_alojamiento.id
 
+            if 'motivo_viaje' in request.data:
+                data['motivo_viaje'] = request.data['motivo_viaje']
+            if 'itinerario' in request.data:
+                data['itinerario'] = request.data['itinerario']
+            
             data['user'] = request.user.id 
             
             serializer = self.get_serializer(data=data)
@@ -153,6 +161,11 @@ class ViajeViewSet(viewsets.ModelViewSet):
                 nuevo_alojamiento, _ = crear_alojamiento(datos_alojamiento)
                 data['alojamiento'] = nuevo_alojamiento.id
 
+            if 'motivo_viaje' in request.data:
+                data['motivo_viaje'] = request.data['motivo_viaje']
+            if 'itinerario' in request.data:
+                data['itinerario'] = request.data['itinerario']
+            
             serializer = self.get_serializer(instance, data=data, partial=partial)
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)

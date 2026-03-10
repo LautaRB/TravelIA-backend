@@ -29,6 +29,7 @@ class PlanificarViajeSerializer(serializers.Serializer):
     rango_fechas = serializers.CharField(required=True)
     cantidad_personas = serializers.IntegerField(min_value=1, required=True)
     medio_transporte = serializers.CharField(required=True)
+    motivo_viaje = serializers.CharField(required=True)
 
     def validate_origen(self, value):
         if value.strip().isdigit(): 
@@ -80,6 +81,18 @@ class PlanificarViajeSerializer(serializers.Serializer):
         if value > 50:
             raise ValidationError("El límite máximo por consulta es de 50 personas.")
         return value
+    
+    def validate_motivo_viaje(self, value):
+        if value.strip().isdigit():
+            raise ValidationError("El motivo del viaje no puede ser numérico.")
+            
+        motivos_permitidos = ["VACACIONES", "TRABAJO", "AVENTURA", "RELAX", "LUNA_DE_MIEL", "CULTURAL", "OTRO"]
+        valor_limpio = value.strip().upper()
+        
+        if valor_limpio not in motivos_permitidos:
+            raise ValidationError(f"Motivo no válido. Opciones permitidas: {', '.join(motivos_permitidos)}.")
+        
+        return valor_limpio
 
 class ViajeSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -89,7 +102,7 @@ class ViajeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']
         read_only_fields = ['user']
 
     def to_representation(self, instance):
@@ -152,6 +165,18 @@ class ViajeSerializer(serializers.ModelSerializer):
         if value > 50:
             raise ValidationError("El límite máximo por consulta es de 50 personas.")
         return value
+    
+    def validate_motivo_viaje(self, value):
+        if value.strip().isdigit():
+            raise ValidationError("El motivo del viaje no puede ser numérico.")
+            
+        motivos_permitidos = ["VACACIONES", "TRABAJO", "AVENTURA", "RELAX", "LUNA_DE_MIEL", "CULTURAL", "OTRO"]
+        valor_limpio = value.strip().upper()
+        
+        if valor_limpio not in motivos_permitidos:
+            raise ValidationError(f"Motivo no válido. Opciones permitidas: {', '.join(motivos_permitidos)}.")
+        
+        return valor_limpio
 
 class ViajeDetailSerializer(serializers.ModelSerializer):
     ruta = RutaSerializer(read_only=True)
@@ -161,4 +186,4 @@ class ViajeDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']
