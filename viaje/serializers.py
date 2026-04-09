@@ -27,7 +27,8 @@ class PlanificarViajeSerializer(serializers.Serializer):
     origen = serializers.CharField(required=True)
     destino = serializers.CharField(required=True)
     rango_fechas = serializers.CharField(required=True)
-    cantidad_personas = serializers.IntegerField(min_value=1, required=True)
+    cantidad_adultos = serializers.IntegerField(min_value=1, required=True)
+    cantidad_ninos = serializers.IntegerField(min_value=0, required=False, default=0)
     medio_transporte = serializers.CharField(required=True)
     motivo_viaje = serializers.CharField(required=True)
 
@@ -77,11 +78,18 @@ class PlanificarViajeSerializer(serializers.Serializer):
             raise ValidationError(f"Medio de transporte no válido. Opciones permitidas: {', '.join(medios_permitidos)}.")
         return valor_limpio
     
-    def validate_cantidad_personas(self, value):
+    def validate_cantidad_adultos(self, value):
         if value < 1:
-            raise ValidationError("Debe viajar al menos 1 persona.")
-        if value > 50:
-            raise ValidationError("El límite máximo por consulta es de 50 personas.")
+            raise ValidationError("Debe viajar al menos 1 adulto responsable.")
+        if value > 30:
+            raise ValidationError("El límite máximo de adultos es de 30.")
+        return value
+
+    def validate_cantidad_ninos(self, value):
+        if value < 0:
+            raise ValidationError("La cantidad de niños no puede ser negativa.")
+        if value > 30:
+            raise ValidationError("El límite máximo de niños es de 30.")
         return value
     
     def validate_motivo_viaje(self, value):
@@ -104,7 +112,7 @@ class ViajeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'cantidad_adultos', 'cantidad_ninos', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
@@ -150,11 +158,14 @@ class ViajeSerializer(serializers.ModelSerializer):
 
         return value
     
-    def validate_cantidad_personas(self, value):
+    def validate_cantidad_adultos(self, value):
         if value < 1:
-            raise ValidationError("Debe viajar al menos 1 persona.")
-        if value > 50:
-            raise ValidationError("El límite máximo por consulta es de 50 personas.")
+            raise ValidationError("Debe viajar al menos 1 adulto responsable.")
+        return value
+
+    def validate_cantidad_ninos(self, value):
+        if value < 0:
+            raise ValidationError("La cantidad de niños no puede ser negativa.")
         return value
     
     def validate_motivo_viaje(self, value):
@@ -177,4 +188,4 @@ class ViajeDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Viaje
-        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']
+        fields = ['id', 'titulo', 'user', 'origen', 'destino', 'rango_fechas', 'cantidad_personas', 'cantidad_adultos', 'cantidad_ninos', 'ruta', 'medio', 'alojamiento', 'precio', 'motivo_viaje', 'itinerario']

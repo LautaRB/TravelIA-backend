@@ -9,6 +9,10 @@ genai.configure(api_key=settings.GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-pro')
 
 def generar_plan_viaje(datos, user):
+    adultos = datos.get('cantidad_adultos', 1)
+    ninos = datos.get('cantidad_ninos', 0)
+    total_pasajeros = adultos + ninos
+    
     dias_viaje = 1
     patron_fechas = re.findall(r'\d{4}-\d{2}-\d{2}', datos['rango_fechas'])
     if len(patron_fechas) == 2:
@@ -30,7 +34,7 @@ def generar_plan_viaje(datos, user):
     
     Planifica un viaje desde '{datos['origen']}' hasta '{datos['destino']}'.
     - Periodo de viaje: {datos['rango_fechas']} (Total: {dias_viaje} días).
-    - Cantidad de pasajeros: {datos['cantidad_personas']}.
+    - Pasajeros: {total_pasajeros} ({adultos} Adultos y {ninos} Niños).
     - Medio de transporte: {datos['medio_transporte']} (Opciones: TERRESTRE, MARITIMO, AEREA).
     - Motivo del viaje: {datos['motivo_viaje']}.
     - Moneda obligatoria para todos los precios: {moneda_usuario}.
@@ -47,7 +51,8 @@ def generar_plan_viaje(datos, user):
       * Opción "Medio": Hoteles 3 estrellas, departamentos enteros cómodos.
       * Opción "Bajo": Hostels compartidos, pensiones o habitaciones privadas económicas.
     - Fórmula de Precio Total: Debes desglosar mentalmente y sumar:
-      (Precio Transporte total por 1 persona * {datos['cantidad_personas']}) + (Precio de 1 Noche de Hotel * {dias_viaje}). 
+      (Precio Transporte total por 1 persona * {datos['total_pasajeros']}) + (Precio de 1 Noche de Hotel * {dias_viaje}). 
+      REGLA FAMILIAR: Ten en cuenta que los {ninos} niños suelen tener tarifas reducidas en transporte y pueden compartir habitación doble/familiar con los {adultos} adultos, reduciendo drásticamente el costo de alojamiento frente a pedir camas separadas.
       Ese cálculo final debe ir en el campo "precio_total_opcion".
 
     Estructura JSON estricta requerida:

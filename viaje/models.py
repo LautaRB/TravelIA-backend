@@ -28,6 +28,8 @@ class Viaje(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     rango_fechas = models.CharField(max_length=150, default="Sin especificar")
     cantidad_personas = models.IntegerField(default=1)
+    cantidad_adultos = models.IntegerField(default=1)
+    cantidad_ninos = models.IntegerField(default=0)
     motivo_viaje = models.CharField(max_length=50, choices=MOTIVOS_CHOICES, default="VACACIONES")
     itinerario = models.JSONField(null=True, blank=True)
     
