@@ -51,7 +51,7 @@ def generar_plan_viaje(datos, user):
       * Opción "Medio": Hoteles 3 estrellas, departamentos enteros cómodos.
       * Opción "Bajo": Hostels compartidos, pensiones o habitaciones privadas económicas.
     - Fórmula de Precio Total: Debes desglosar mentalmente y sumar:
-      (Precio Transporte total por 1 persona * {datos['total_pasajeros']}) + (Precio de 1 Noche de Hotel * {dias_viaje}). 
+      (Precio Transporte total por 1 persona * {total_pasajeros}) + (Precio de 1 Noche de Hotel * {dias_viaje}).
       REGLA FAMILIAR: Ten en cuenta que los {ninos} niños suelen tener tarifas reducidas en transporte y pueden compartir habitación doble/familiar con los {adultos} adultos, reduciendo drásticamente el costo de alojamiento frente a pedir camas separadas.
       Ese cálculo final debe ir en el campo "precio_total_opcion".
 
