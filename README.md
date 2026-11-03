@@ -9,7 +9,7 @@ API RESTful para **Travelia**, una plataforma inteligente de planificación de v
 
 El sistema integra **Google Gemini AI** para la generación automatizada de itinerarios a medida, implementa autenticación híbrida (JWT nativo + Google OAuth 2.0), gestiona preferencias regionales del usuario y optimiza el almacenamiento multimedia en la nube mediante **Cloudinary**.
 
-> 🔗 **Repositorio Frontend:** [[TravelIA-Frontend]](https://github.com/LautaRB/TravelIA-frontend)
+> 🔗 **Repositorio Frontend:** [TravelIA-Frontend](https://github.com/LautaRB/TravelIA-frontend)
 
 ---
 
